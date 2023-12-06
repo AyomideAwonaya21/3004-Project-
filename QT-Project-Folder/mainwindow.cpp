@@ -1,13 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QPixmap>
+#include <QDir>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QPixmap pix("/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder/Images/main.png");
+    QString imagePath = QDir::currentPath() + "/Images/main.png";
+    qDebug() << imagePath;
+    QPixmap pix(imagePath);
     ui->mainImage->setPixmap(pix);
 
     //the checkpoints are for the images, light them green when the image is active and play audio

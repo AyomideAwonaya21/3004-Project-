@@ -9,10 +9,20 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    AEDInterface.cpp \
+    AEDSimulation.cpp \
+    ArrhythmiaDetector.cpp \
+    CPRFeedback.cpp \
+    Scenario.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    AEDInterface.h \
+    AEDSimulation.h \
+    ArrhythmiaDetector.h \
+    CPRFeedback.h \
+    Scenario.h \
     mainwindow.h
 
 FORMS += \

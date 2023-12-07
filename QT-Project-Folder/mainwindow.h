@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "AEDSimulation.h"  // Include AEDSimulation header
+#include <QPlainTextEdit>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,6 +15,9 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void updateTimeInThread(QPlainTextEdit *timeTextEdit);
+    void startThreadToUpdateTime(QPlainTextEdit *timeTextEdit);
+
 
 private slots:
     void on_shockButton_clicked();

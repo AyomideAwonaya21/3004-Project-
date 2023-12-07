@@ -34,6 +34,7 @@ private:
     bool simulationRunning;
     std::vector<double> ecgData;
 
+
     int shockCount;
     bool powerState;
     int currentStep;

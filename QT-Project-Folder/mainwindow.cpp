@@ -1,18 +1,23 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QPixmap>
+#include <QDir>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), aedSimulation() {
     ui->setupUi(this);
 
     // Set the main image using the provided path
-    QPixmap pix("/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder/Images/main.png");
+    //QPixmap pix("/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder/Images/main.png");
+    QString imagePath = QDir:: currentPath()+"/Images/main.png";
+    QPixmap pix(imagePath);
+    qDebug() << imagePath;
     ui->mainImage->setPixmap(pix);
 
     // Connect buttons to their respective slots
-    connect(ui->shockButton, &QPushButton::clicked, this, &MainWindow::on_shockButton_clicked);
-    connect(ui->onButton, &QPushButton::clicked, this, &MainWindow::on_onButton_clicked);
+    //connect(ui->shockButton, &QPushButton::clicked, this, &MainWindow::on_shockButton_clicked);
+    //connect(ui->onButton, &QPushButton::clicked, this, &MainWindow::on_onButton_clicked);
 
     // Start the AED simulation
     //aedSimulation.startSimulation();

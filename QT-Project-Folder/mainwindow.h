@@ -25,7 +25,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    AEDSimulation aedSimulation;  // AEDSimulation as a member variable
+    AEDSimulation *aedSimulation;  // AEDSimulation as a pointer
 
     void updateInterface();
     void updateCheckpoints(int step);

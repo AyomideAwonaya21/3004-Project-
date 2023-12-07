@@ -42,7 +42,6 @@ private:
     bool simulationRunning;
     std::vector<double> ecgData;
 
-    QTimer *timer;
     int shockCount;
     bool powerState;
     int currentStep;

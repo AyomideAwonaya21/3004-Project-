@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->onButton, &QPushButton::clicked, this, &MainWindow::on_onButton_clicked);
 
     // Start the AED simulation
-    aedSimulation.startSimulation();
+    //aedSimulation.startSimulation();
 
     // Set the initial size of the MainWindow
     resize(800, 600);

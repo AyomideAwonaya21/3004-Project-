@@ -52,9 +52,19 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../QT-Project-Folder/main.cpp \
+SOURCES       = ../QT-Project-Folder/AEDInterface.cpp \
+		../QT-Project-Folder/AEDSimulation.cpp \
+		../QT-Project-Folder/ArrhythmiaDetector.cpp \
+		../QT-Project-Folder/CPRFeedback.cpp \
+		../QT-Project-Folder/Scenario.cpp \
+		../QT-Project-Folder/main.cpp \
 		../QT-Project-Folder/mainwindow.cpp moc_mainwindow.cpp
-OBJECTS       = main.o \
+OBJECTS       = AEDInterface.o \
+		AEDSimulation.o \
+		ArrhythmiaDetector.o \
+		CPRFeedback.o \
+		Scenario.o \
+		main.o \
 		mainwindow.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -114,6 +124,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../QT-Project-Folder/.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -134,7 +145,17 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../QT-Project-Folder/QT-Project-Folder.pro ../QT-Project-Folder/mainwindow.h ../QT-Project-Folder/main.cpp \
+		../QT-Project-Folder/QT-Project-Folder.pro ../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		../QT-Project-Folder/Scenario.h \
+		../QT-Project-Folder/mainwindow.h ../QT-Project-Folder/AEDInterface.cpp \
+		../QT-Project-Folder/AEDSimulation.cpp \
+		../QT-Project-Folder/ArrhythmiaDetector.cpp \
+		../QT-Project-Folder/CPRFeedback.cpp \
+		../QT-Project-Folder/Scenario.cpp \
+		../QT-Project-Folder/main.cpp \
 		../QT-Project-Folder/mainwindow.cpp
 QMAKE_TARGET  = QT-Project-Folder
 DESTDIR       = 
@@ -204,6 +225,7 @@ Makefile: ../QT-Project-Folder/QT-Project-Folder.pro /usr/lib/x86_64-linux-gnu/q
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -283,6 +305,7 @@ Makefile: ../QT-Project-Folder/QT-Project-Folder.pro /usr/lib/x86_64-linux-gnu/q
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -319,8 +342,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QT-Project-Folder/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QT-Project-Folder/AEDInterface.h ../QT-Project-Folder/AEDSimulation.h ../QT-Project-Folder/ArrhythmiaDetector.h ../QT-Project-Folder/CPRFeedback.h ../QT-Project-Folder/Scenario.h ../QT-Project-Folder/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QT-Project-Folder/AEDInterface.cpp ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/ArrhythmiaDetector.cpp ../QT-Project-Folder/CPRFeedback.cpp ../QT-Project-Folder/Scenario.cpp ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../QT-Project-Folder/mainwindow.ui $(DISTDIR)/
 
 
@@ -357,6 +380,11 @@ compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
 moc_mainwindow.cpp: ../QT-Project-Folder/mainwindow.h \
+		../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		../QT-Project-Folder/Scenario.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/student/Desktop/Final Project/3004-Project-/build-QT-Project-Folder-Desktop-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-Project-Folder/mainwindow.h -o moc_mainwindow.cpp
@@ -382,10 +410,39 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-main.o: ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.h
+AEDInterface.o: ../QT-Project-Folder/AEDInterface.cpp ../QT-Project-Folder/AEDInterface.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AEDInterface.o ../QT-Project-Folder/AEDInterface.cpp
+
+AEDSimulation.o: ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		../QT-Project-Folder/Scenario.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AEDSimulation.o ../QT-Project-Folder/AEDSimulation.cpp
+
+ArrhythmiaDetector.o: ../QT-Project-Folder/ArrhythmiaDetector.cpp ../QT-Project-Folder/ArrhythmiaDetector.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ArrhythmiaDetector.o ../QT-Project-Folder/ArrhythmiaDetector.cpp
+
+CPRFeedback.o: ../QT-Project-Folder/CPRFeedback.cpp ../QT-Project-Folder/CPRFeedback.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CPRFeedback.o ../QT-Project-Folder/CPRFeedback.cpp
+
+Scenario.o: ../QT-Project-Folder/Scenario.cpp ../QT-Project-Folder/Scenario.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scenario.o ../QT-Project-Folder/Scenario.cpp
+
+main.o: ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.h \
+		../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		../QT-Project-Folder/Scenario.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../QT-Project-Folder/main.cpp
 
 mainwindow.o: ../QT-Project-Folder/mainwindow.cpp ../QT-Project-Folder/mainwindow.h \
+		../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		../QT-Project-Folder/Scenario.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../QT-Project-Folder/mainwindow.cpp
 

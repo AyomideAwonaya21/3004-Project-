@@ -46,12 +46,12 @@ void AEDSimulation::updateSimulation() {
         return;
     }
 
-    bool shockableRhythm = arrhythmiaDetector.analyzeRhythm(ecgData);
-    interface.displayShockInstructions(shockableRhythm);
+    //bool shockableRhythm = arrhythmiaDetector.analyzeRhythm(ecgData);
+    //interface.displayShockInstructions(shockableRhythm);
 
     // Simulate user action for CPR
-    cprFeedback.evaluateCompressions(100, 5); // Example CPR rate and depth
-    interface.updateCPRFeedback(cprFeedback.getFeedback());
+    //cprFeedback.evaluateCompressions(100, 5); // Example CPR rate and depth
+    //interface.updateCPRFeedback(cprFeedback.getFeedback());
 
     // Update the scenario based on the simulation state
     currentScenario.executeScenario();
@@ -67,19 +67,15 @@ void AEDSimulation::deliverShock() {
 }
 
 void AEDSimulation::powerOn(int useCaseNumber) {
+
     simulationRunning = true;
     powerState = true;
     currentTime = "00:00";
     timer->start();  // Start the timer
-    // this function should set the interface texts to the appropriate texts
-    // this function should also set batter life
-    // then call start simulation
     powerState = true;
-    //current instruction and step should go along witht he picture
-    //currentInstruction = "AED Powered On";
-    //currentStep = 1;
     currentStep = 3;
-    currentScenario.loadScenario(ScenarioType::PowerOn);
+    if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::PowerOn);
+    //else if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::PowerOn);
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 
@@ -120,7 +116,32 @@ std::string AEDSimulation::formatTime(long seconds) const {
 }
 
 void AEDSimulation::updateCurrentStepAndInstruction(int step, const std::string& instruction) {
+    // if the step is to check the HB then the instruction change to show the graph
     currentStep = step;
     currentInstruction = instruction;
+    if(instruction == "DisplayShockable"){
+        qDebug("IT SHOULD DISPLAY IMAGE");
+    }
     emit updateInterfaceSignal();  // Emit signal to update the interface
+}
+bool AEDSimulation::analyzeHB(std::string condition){
+
+    this->arrhythmiaDetector.analyzeRhythm(condition);
+    // change display based on shockable or non-shockable
+    updateCurrentStepAndInstruction(this->currentStep, "Analysing HB...");
+    handleTimeIntervals([this](){
+        updateCurrentStepAndInstruction(this->currentStep, "DisplayShockable");
+    },2);
+};
+void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
+    QTimer* timer = new QTimer();
+    QObject::connect(timer, &QTimer::timeout, [=]() {
+        action();
+
+        // Stop the timer after executing the action
+        timer->stop();
+    });
+
+    // Start the timer with the specified interval
+    timer->start(timeInSeconds * 1000);  // Convert seconds to milliseconds
 }

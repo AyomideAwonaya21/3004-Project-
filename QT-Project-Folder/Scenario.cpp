@@ -24,14 +24,13 @@ void Scenario::executeScenario() {
         std::cout << "No scenario loaded." << std::endl;
         return;
     }
-    std::cout << "Executing Scenario: " << description << std::endl;
+    //std::cout << "Executing Scenario: " << description << std::endl;
     processExecution();
 }
 
 void Scenario::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
     QTimer* timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, [=]() {
-        qDebug() << "Time has elapsed";
         action();
 
         // Stop the timer after executing the action
@@ -94,7 +93,9 @@ void Scenario::placePadsOnPatient(){
 
 };
 void Scenario::conductHeartBeatAnalysis(){
+    // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4, "Checking HB");
+    aedSimulation.analyzeHB("stable");
 };
 void Scenario::allowShock(){
     aedSimulation.updateCurrentStepAndInstruction(5, "Apply Shock");

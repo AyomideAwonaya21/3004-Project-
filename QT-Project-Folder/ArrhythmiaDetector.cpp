@@ -1,22 +1,25 @@
 #include "ArrhythmiaDetector.h"
 #include <cmath>
-
+#include <string>
+#include <QDebug>
 ArrhythmiaDetector::ArrhythmiaDetector() : shockableThreshold(100.0), analysisWindow(5000) {
     // Initialization code for ArrhythmiaDetector
 }
 
 ArrhythmiaDetector::~ArrhythmiaDetector() {}
+//bool ArrhythmiaDetector::analyzeRhythm(const std::vector<double>& ecgData);
+bool ArrhythmiaDetector::analyzeRhythm(const std::string condition) {
+//    for (const auto& data : ecgData) {
+//        recentECGData.push(data);
+//        // Cast recentECGData.size() to int for comparison
+//        if (static_cast<int>(recentECGData.size()) > analysisWindow) {
+//            recentECGData.pop();
+//        }
+//    }
 
-bool ArrhythmiaDetector::analyzeRhythm(const std::vector<double>& ecgData) {
-    for (const auto& data : ecgData) {
-        recentECGData.push(data);
-        // Cast recentECGData.size() to int for comparison
-        if (static_cast<int>(recentECGData.size()) > analysisWindow) {
-            recentECGData.pop();
-        }
-    }
-
-    return isRhythmShockable(ecgData);
+//    return isRhythmShockable(ecgData);
+    qDebug() << "Trying to analyze the HB";
+    return true;
 }
 
 

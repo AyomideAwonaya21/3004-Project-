@@ -33,6 +33,7 @@ public:
     bool isPoweredOn() const;
     int getCurrentStep() const;
     void updateCurrentStepAndInstruction(int step, const std::string& instruction);
+    bool analyzeHB(std::string condition); // calls the arrhythmiaDetector to analyze HB
 
 signals:
     void updateInterfaceSignal();
@@ -47,6 +48,7 @@ private:
     bool simulationRunning;
     std::vector<double> ecgData;
     MainWindow *mainwindow;
+    void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
 
     int shockCount;
     bool powerState;

@@ -74,7 +74,7 @@ void MainWindow::updateInterface() {
 }
 
 void MainWindow::updateCheckpoints(int step) {
-    qDebug() << step;
+    //qDebug() << step;
     // Update the color of each checkpoint based on the current step of the simulation
     ui->checkPoint1->setStyleSheet(step == 1 ? "background-color: green;" : "background-color: grey;");
     ui->checkPoint2->setStyleSheet(step == 2 ? "background-color: green;" : "background-color: grey;");

@@ -67,6 +67,10 @@ void AEDSimulation::deliverShock() {
 }
 
 void AEDSimulation::powerOn(int useCaseNumber) {
+    simulationRunning = true;
+    powerState = true;
+    currentTime = "00:00";
+    timer->start();  // Start the timer
     // this function should set the interface texts to the appropriate texts
     // this function should also set batter life
     // then call start simulation

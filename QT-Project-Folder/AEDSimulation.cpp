@@ -4,6 +4,8 @@
 #include <iomanip>  // For setting precision of currentTime
 #include "mainwindow.h"
 #include "Scenario.h"
+#include <QString>
+#include <QDir>
 
 AEDSimulation::AEDSimulation(Ui::MainWindow* ui): mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
     //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
@@ -73,7 +75,7 @@ void AEDSimulation::powerOn(int useCaseNumber) {
     currentTime = "00:00";
     timer->start();  // Start the timer
     powerState = true;
-    currentStep = 3;
+    currentStep = useCaseNumber;
     if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::PowerOn);
     //else if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::PowerOn);
     emit updateInterfaceSignal();  // Emit signal to update the interface
@@ -117,9 +119,26 @@ std::string AEDSimulation::formatTime(long seconds) const {
 
 void AEDSimulation::updateCurrentStepAndInstruction(int step, const std::string& instruction) {
     // if the step is to check the HB then the instruction change to show the graph
+    // Set the main image using the provided path
+    QString imagePath = QDir::currentPath() + "/Images/Shockable1.png";
     currentStep = step;
     currentInstruction = instruction;
     if(instruction == "DisplayShockable"){
+        QImage image(imagePath);
+        if(!image.isNull()){
+             std::cout <<"Image is NOT null"<<std::endl;
+             QPixmap pix(imagePath);
+             //mainUi->testIMG->setPixmap(pix);
+
+             // Resize the pixmap to fit the size of the label
+                 QSize labelSize = mainUi->testIMG->size();  // Get the size of the label
+                 QPixmap scaledPix = pix.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                 mainUi->testIMG->setPixmap(scaledPix);
+        }
+        else{
+            std::cout <<"Image is null"<<std::endl;
+        }
         qDebug("IT SHOULD DISPLAY IMAGE");
     }
     emit updateInterfaceSignal();  // Emit signal to update the interface

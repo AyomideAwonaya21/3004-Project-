@@ -26,11 +26,12 @@ public:
     void loadScenario(ScenarioType type);
     void executeScenario();
     //void setWindow(Mainwindow *window);
+public slots:
+    void onNextButtonClicked();
 
 private:
     ScenarioType currentType;
     std::string description;
-    std::vector<std::string> actions;
     void initializeScenario(ScenarioType type);
     void processExecution();
     AEDSimulation& aedSimulation;
@@ -38,6 +39,11 @@ private:
     bool shockButtonPressed = false;
     void onShockButtonClicked();
     void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
+    int currentFunctionIndex;
+    void donNextButtonClicked();
+    std::vector<std::function<void()>> actions;
+    void onPadsPlaceButtonClicked();
+    bool padsPlaced = false;
 
     // These are the steps the machine takes
     void checkPatient();

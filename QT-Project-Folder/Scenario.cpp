@@ -6,7 +6,7 @@
 #include <QPushButton>
 
 Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui), currentType(ScenarioType::BasicLifeSupport) {
-
+    connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
 }
 
 Scenario::~Scenario() {
@@ -42,29 +42,26 @@ void Scenario::handleTimeIntervals(std::function<void()> action, int timeInSecon
 }
 
 void Scenario::initializeScenario(ScenarioType type) {
+    currentFunctionIndex = 0;
+    mainUi.padsOn->setStyleSheet("background-color: red;");
+    connect(mainUi.placePadsButton, &QPushButton::clicked, this, &Scenario::onPadsPlaceButtonClicked);
     switch (type) {
         case ScenarioType::PowerOn:
+            std::cout<<"HERE------"<<std::endl;
             checkPatient();
-            handleTimeIntervals([this]() {
-                callAmbulance();
-                handleTimeIntervals([this]() {
-                    placePadsOnPatient();
-                    handleTimeIntervals([this](){
-                        conductHeartBeatAnalysis();
-                        handleTimeIntervals([this](){
-                            allowShock();
-                        },2);
-                    },2);
-                }, 2);
-            }, 2);
+            actions = {
+                [this]() { callAmbulance(); },
+                [this]() { placePadsOnPatient(); },
+                [this]() { conductHeartBeatAnalysis(); }
+            };
             break;
         case ScenarioType::BasicLifeSupport:
             description = "Basic Life Support Scenario";
-            actions = {"Check responsiveness", "Call for help", "Perform CPR"};
+            //actions = {"Check responsiveness", "Call for help", "Perform CPR"};
             break;
         case ScenarioType::AdvancedCardiacLifeSupport:
             description = "Advanced Cardiac Life Support Scenario";
-            actions = {"Use defibrillator", "Administer medication", "Continue CPR"};
+            //actions = {"Use defibrillator", "Administer medication", "Continue CPR"};
             break;
         // Additional scenarios...
         default:
@@ -76,7 +73,7 @@ void Scenario::initializeScenario(ScenarioType type) {
 
 void Scenario::processExecution() {
     for (const auto& action : actions) {
-        std::cout << "Performing action: " << action << std::endl;
+        //std::cout << "Performing action: " << action << std::endl;
         // Add detailed logic for each action
     }
 }
@@ -110,5 +107,28 @@ void Scenario::CPRAndMouthToMouth(){
 void Scenario::onShockButtonClicked(){
     qDebug()<<"Shock button Has been Pressed";
 };
+void Scenario::onNextButtonClicked() {
+    // Check if the currentFunctionIndex is within the bounds of the actions vector
+    if (currentFunctionIndex < actions.size()) {
+        // Execute the function at the current index
+        actions[currentFunctionIndex]();
+
+        // Increment the index for the next function
+        //check to see if pads are placed before moving to next step
+        std::cout<<"The function index is: ";
+        std::cout<<currentFunctionIndex<<std::endl;
+        if(currentFunctionIndex == 1 && this->padsPlaced == false){
+            std::cout<<"PADS ARE NOT PLACE"<<std::endl;
+        }
+        else{++currentFunctionIndex;};
+
+    }
+};
+void Scenario::onPadsPlaceButtonClicked() {
+    // Change the color of mainUi->padsOn to green
+    mainUi.padsOn->setStyleSheet("background-color: green;");
+    this->padsPlaced = true;
+}
+
 
 

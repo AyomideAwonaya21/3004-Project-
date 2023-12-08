@@ -49,6 +49,7 @@ private:
     std::vector<double> ecgData;
     MainWindow *mainwindow;
     void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
+    bool padsPlaced;
 
     int shockCount;
     bool powerState;

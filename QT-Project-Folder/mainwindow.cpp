@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
-    aedSimulation = new AEDSimulation(this); // Initialize AEDSimulation
+    aedSimulation = new AEDSimulation(ui); // Initialize AEDSimulation
 
     // Set the main image using the provided path
     QString imagePath = QDir::currentPath() + "/Images/main.png";
@@ -50,11 +50,11 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::on_shockButton_clicked() {
-    // Handle logic when the shock button is clicked
-    aedSimulation->deliverShock();
-    updateInterface();
-}
+//void MainWindow::on_shockButton_clicked() {
+//    // Handle logic when the shock button is clicked
+//    aedSimulation->deliverShock();
+//    updateInterface();
+//}
 
 void MainWindow::onButtonClicked(int useCaseNumber) {
     // Handle logic when the on button is clicked

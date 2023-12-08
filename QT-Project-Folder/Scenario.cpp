@@ -3,10 +3,15 @@
 #include <QDebug>
 #include <QTimer>
 #include <QObject>
+#include <QPushButton>
 
-Scenario::Scenario(AEDSimulation &aedSimulation) : aedSimulation(aedSimulation), currentType(ScenarioType::BasicLifeSupport) {}
+Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui), currentType(ScenarioType::BasicLifeSupport) {
 
-Scenario::~Scenario() {}
+}
+
+Scenario::~Scenario() {
+
+}
 
 void Scenario::loadScenario(ScenarioType type) {
     currentType = type;
@@ -23,7 +28,7 @@ void Scenario::executeScenario() {
     processExecution();
 }
 
-void Scenario::handleTenSecondIntervals(std::function<void()> action) {
+void Scenario::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
     QTimer* timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, [=]() {
         qDebug() << "Time has elapsed";
@@ -33,20 +38,26 @@ void Scenario::handleTenSecondIntervals(std::function<void()> action) {
         timer->stop();
     });
 
-    // Start the timer with a 10-second interval
-    timer->start(10000);
+    // Start the timer with the specified interval
+    timer->start(timeInSeconds * 1000);  // Convert seconds to milliseconds
 }
 
 void Scenario::initializeScenario(ScenarioType type) {
     switch (type) {
         case ScenarioType::PowerOn:
-        checkPatient();
-        handleTenSecondIntervals([this]() {
-            callAmbulance();
-            handleTenSecondIntervals([this](){
-                placePadsOnPatient();
-            });
-        });
+            checkPatient();
+            handleTimeIntervals([this]() {
+                callAmbulance();
+                handleTimeIntervals([this]() {
+                    placePadsOnPatient();
+                    handleTimeIntervals([this](){
+                        conductHeartBeatAnalysis();
+                        handleTimeIntervals([this](){
+                            allowShock();
+                        },2);
+                    },2);
+                }, 2);
+            }, 2);
             break;
         case ScenarioType::BasicLifeSupport:
             description = "Basic Life Support Scenario";
@@ -82,13 +93,21 @@ void Scenario::placePadsOnPatient(){
     aedSimulation.updateCurrentStepAndInstruction(3, "Place Pads");
 
 };
-void conductHeartBeatAnalysis();
-void allowShock(); //this is to give patient shock after HB analysis
-void CPRAndMouthToMouth();
+void Scenario::conductHeartBeatAnalysis(){
+    aedSimulation.updateCurrentStepAndInstruction(4, "Checking HB");
+};
+void Scenario::allowShock(){
+    aedSimulation.updateCurrentStepAndInstruction(5, "Apply Shock");
+    // Connect the clicked signal of shockButton to onShockButtonClicked slot
+    QObject::connect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
 
+}; //this is to give patient shock after HB analysis
+void Scenario::CPRAndMouthToMouth(){
+    aedSimulation.updateCurrentStepAndInstruction(6, "Perform CPR");
+};
 
-//void Scenario::setWindow(QObject *window){
-//    this->mainWindow = window;
-//}
+void Scenario::onShockButtonClicked(){
+    qDebug()<<"Shock button Has been Pressed";
+};
 
 

@@ -21,7 +21,7 @@ public:
 
 
 private slots:
-    void on_shockButton_clicked();
+   // void on_shockButton_clicked();
     void onButtonClicked(int useCaseNumber);
 
 private:

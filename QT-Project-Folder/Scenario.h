@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include <QObject>
+#include <QPushButton>
+#include "ui_mainwindow.h"
 class AEDSimulation;
 enum class ScenarioType {
     PowerOn,
@@ -15,9 +17,10 @@ enum class ScenarioType {
     Unknown
 };
 
-class Scenario {
+class Scenario: public QObject {
+    Q_OBJECT
 public:
-    Scenario(AEDSimulation& aedSimulation);
+    Scenario(AEDSimulation& aedSimulation,Ui::MainWindow& ui);
     ~Scenario();
 
     void loadScenario(ScenarioType type);
@@ -31,7 +34,10 @@ private:
     void initializeScenario(ScenarioType type);
     void processExecution();
     AEDSimulation& aedSimulation;
-     void handleTenSecondIntervals(std::function<void()> action);
+    Ui::MainWindow& mainUi;
+    bool shockButtonPressed = false;
+    void onShockButtonClicked();
+    void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
 
     // These are the steps the machine takes
     void checkPatient();

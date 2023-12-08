@@ -3,8 +3,9 @@
 #include <sstream>
 #include <iomanip>  // For setting precision of currentTime
 #include "mainwindow.h"
+#include "Scenario.h"
 
-AEDSimulation::AEDSimulation(MainWindow *mainwindow): mainwindow(mainwindow), simulationRunning(false), shockCount(0), powerState(false), currentStep(0), currentScenario(*this) {
+AEDSimulation::AEDSimulation(Ui::MainWindow* ui): mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
     //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
 
     // Initialize QTimer

@@ -9,6 +9,7 @@
 #include "Scenario.h"
 #include <vector>
 #include <string>
+#include "ui_mainwindow.h"
 class MainWindow;
 
 class AEDSimulation : public QObject {
@@ -16,7 +17,7 @@ class AEDSimulation : public QObject {
 
 public:
     //explicit AEDSimulation(QObject *parent = nullptr);
-    AEDSimulation(MainWindow* mainwindow);
+    AEDSimulation(Ui::MainWindow* ui);
     ~AEDSimulation();
 
     void startSimulation(int useCaseNumber);
@@ -41,6 +42,7 @@ private:
     AEDInterface interface;
     ArrhythmiaDetector arrhythmiaDetector;
     CPRFeedback cprFeedback;
+    Ui::MainWindow* mainUi;
     Scenario currentScenario;
     bool simulationRunning;
     std::vector<double> ecgData;

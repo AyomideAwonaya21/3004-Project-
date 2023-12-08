@@ -40,7 +40,6 @@ void ArrhythmiaDetector::processECGSegment(const std::vector<double>& ecgSegment
     if (ecgSegment.empty()) {
         return;  // Return if the segment is empty
     }
-
     // Detecting abnormal spikes or drops in the ECG segment
     double lastValue = ecgSegment.front();
     for (auto value : ecgSegment) {

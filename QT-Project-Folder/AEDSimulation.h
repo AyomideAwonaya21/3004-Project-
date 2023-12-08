@@ -9,26 +9,29 @@
 #include "Scenario.h"
 #include <vector>
 #include <string>
+class MainWindow;
 
 class AEDSimulation : public QObject {
     Q_OBJECT
 
 public:
-    explicit AEDSimulation(QObject *parent = nullptr);
+    //explicit AEDSimulation(QObject *parent = nullptr);
+    AEDSimulation(MainWindow* mainwindow);
     ~AEDSimulation();
 
-    void startSimulation();
+    void startSimulation(int useCaseNumber);
     void stopSimulation();
     void simulateECGData();
     void updateSimulation();
 
     void deliverShock();
-    void powerOn();
+    void powerOn(int useCaseNumber);
     std::string getCurrentInstruction() const;
     std::string getCurrentTime() const;
     int getShockCount() const;
     bool isPoweredOn() const;
     int getCurrentStep() const;
+    void updateCurrentStepAndInstruction(int step, const std::string& instruction);
 
 signals:
     void updateInterfaceSignal();
@@ -41,6 +44,7 @@ private:
     Scenario currentScenario;
     bool simulationRunning;
     std::vector<double> ecgData;
+    MainWindow *mainwindow;
 
     int shockCount;
     bool powerState;
@@ -48,6 +52,7 @@ private:
     std::string currentInstruction;
     std::string currentTime;
     std::string formatTime(long seconds) const;
+    QTimer *timer;
 
     void updateCurrentTime();
 };

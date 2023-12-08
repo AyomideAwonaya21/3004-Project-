@@ -2,10 +2,10 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>  // For setting precision of currentTime
+#include "mainwindow.h"
 
-AEDSimulation::AEDSimulation(QObject *parent)
-    : QObject(parent), simulationRunning(false), shockCount(0), powerState(false), currentStep(0) {
-    currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
+AEDSimulation::AEDSimulation(MainWindow *mainwindow): mainwindow(mainwindow), simulationRunning(false), shockCount(0), powerState(false), currentStep(0), currentScenario(*this) {
+    //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
 
     // Initialize QTimer
     timer = new QTimer(this);
@@ -17,7 +17,7 @@ AEDSimulation::~AEDSimulation() {
     delete timer;
 }
 
-void AEDSimulation::startSimulation() {
+void AEDSimulation::startSimulation(int useCaseNumber) {
     simulationRunning = true;
     powerState = true;
     currentTime = "00:00";
@@ -65,10 +65,16 @@ void AEDSimulation::deliverShock() {
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 
-void AEDSimulation::powerOn() {
+void AEDSimulation::powerOn(int useCaseNumber) {
+    // this function should set the interface texts to the appropriate texts
+    // this function should also set batter life
+    // then call start simulation
     powerState = true;
-    currentInstruction = "AED Powered On";
-    currentStep = 1;
+    //current instruction and step should go along witht he picture
+    //currentInstruction = "AED Powered On";
+    //currentStep = 1;
+    currentStep = 3;
+    currentScenario.loadScenario(ScenarioType::PowerOn);
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 
@@ -106,4 +112,10 @@ std::string AEDSimulation::formatTime(long seconds) const {
     std::stringstream ss;
     ss << std::setfill('0') << std::setw(2) << mins << ":" << std::setw(2) << secs;
     return ss.str();
+}
+
+void AEDSimulation::updateCurrentStepAndInstruction(int step, const std::string& instruction) {
+    currentStep = step;
+    currentInstruction = instruction;
+    emit updateInterfaceSignal();  // Emit signal to update the interface
 }

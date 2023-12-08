@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include <QDir>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -19,16 +20,27 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect buttons to their respective slots
     //connect(ui->shockButton, &QPushButton::clicked, this, &MainWindow::on_shockButton_clicked);
-    //connect(ui->onButton, &QPushButton::clicked, this, &MainWindow::on_onButton_clicked);
+    connect(ui->onButton, &QPushButton::clicked, [=](){
+        int useCaseNumber = ui->useCaseNumber->value();
+        onButtonClicked(useCaseNumber);
+    });
 
     // Connect the AEDSimulation signals to MainWindow slots
     connect(aedSimulation, &AEDSimulation::updateInterfaceSignal, this, &MainWindow::updateInterface);
 
     // Start the AED simulation
-    aedSimulation->startSimulation();
+//    //connect(ui->onButton,&QPushButton::clicked, this, &MainWindow::startSimulation);
+//    connect(ui->onButton,&QPushButton::clicked, [=](){
+//        startSimulation(useCaseNumber);
+//    });
+
 
     // Set the initial size of the MainWindow
     resize(800, 600);
+}
+
+void MainWindow::startSimulation(int useCaseNumber){
+     //aedSimulation->startSimulation(useCaseNumber);
 }
 
 MainWindow::~MainWindow() {
@@ -44,9 +56,9 @@ void MainWindow::on_shockButton_clicked() {
     updateInterface();
 }
 
-void MainWindow::on_onButton_clicked() {
+void MainWindow::onButtonClicked(int useCaseNumber) {
     // Handle logic when the on button is clicked
-    aedSimulation->powerOn();
+    aedSimulation->powerOn(useCaseNumber);
     updateInterface();
 }
 
@@ -62,39 +74,12 @@ void MainWindow::updateInterface() {
 }
 
 void MainWindow::updateCheckpoints(int step) {
+    qDebug() << step;
     // Update the color of each checkpoint based on the current step of the simulation
-    ui->checkPoint1->setStyleSheet(step >= 1 ? "background-color: green;" : "background-color: grey;");
-    ui->checkPoint2->setStyleSheet(step >= 2 ? "background-color: green;" : "background-color: grey;");
-    ui->checkPoint3->setStyleSheet(step >= 3 ? "background-color: green;" : "background-color: grey;");
-    ui->checkPoint4->setStyleSheet(step >= 4 ? "background-color: green;" : "background-color: grey;");
-    ui->checkPoint5->setStyleSheet(step >= 5 ? "background-color: green;" : "background-color: grey;");
-    ui->checkPoint6->setStyleSheet(step >= 6 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint1->setStyleSheet(step == 1 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint2->setStyleSheet(step == 2 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint3->setStyleSheet(step == 3 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint4->setStyleSheet(step == 4 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint5->setStyleSheet(step == 5 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint6->setStyleSheet(step == 6 ? "background-color: green;" : "background-color: grey;");
 }
-
-//void MainWindow::updateTimeInThread(QPlainTextEdit *timeTextEdit){
-//    QTime currentTime(0,0);
-//    //function to update and emit signal
-//    auto updateAndEmit = [&](){
-//        currentTime = currentTime.addSecs(1);
-//        QString timeString = currentTime.toString("hh:mm");
-//        emit timeTextEdit->document()->setPlainText(timeString);
-//    };
-
-//    //Set up a Timer to call updateTimeAndEmit function very second
-//    QTimer timer;
-//    QObject::connect(&timer,&QTimer::timeout, updateAndEmit);
-//    timer.start(1000);
-//    // Run the thread's event loop
-//    QThread::currentThread()->exec();
-//}
-//void startThreadToUpdateTime(QPlainTextEdit *timeTextEdit){
-//    //Create a thread and move the time update function to that thread
-//    QThread *thread = new QThread;
-//    moveToThread(thread);
-
-//    //Connect the thread's started signal to the function
-//    QObject::connect(thread, &QThread::started [=](){
-//        updateTimeInThread(timeTextEdit);
-//    })
-//    thread->start();
-//}

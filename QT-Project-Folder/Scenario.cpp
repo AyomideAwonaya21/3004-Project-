@@ -4,9 +4,15 @@
 #include <QTimer>
 #include <QObject>
 #include <QPushButton>
+#include <random>
+#include <iostream>
 
 Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui) {
     connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<>distribution(1,3);
+    shocksNeeded = distribution(gen);
 }
 
 Scenario::~Scenario() {
@@ -62,10 +68,26 @@ void Scenario::initializeScenario(ScenarioType type) {
             break;
         case ScenarioType::RegularHBFlatlined:
             description = "Advanced Cardiac Life Support Scenario";
-            //actions = {"Use defibrillator", "Administer medication", "Continue CPR"};
+            checkPatient();
+            actions = {
+                [this]() { callAmbulance(); },
+                [this]() { placePadsOnPatient(); },
+                [this]() { conductHeartBeatAnalysis(); },
+                [this]() { performCPR();},
+                 [this]() { waitForAmbulance();},
+            };
             break;
         // Additional scenarios...
         case ScenarioType:: IrregularHBVF:
+         checkPatient();
+         actions = {
+            [this]() { callAmbulance(); },
+            [this]() { placePadsOnPatient(); },
+            [this]() { conductHeartBeatAnalysis(); },
+
+            [this]() { performCPR();},
+             [this]() { waitForAmbulance();},
+             };
             break;
         case ScenarioType:: IrregularHBVT:
             break;
@@ -100,6 +122,10 @@ void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
     if(aedSimulation.getUseCaseNumber() == 2){aedSimulation.analyzeHB(2);}
+    else  if(aedSimulation.getUseCaseNumber() == 3){aedSimulation.analyzeHB(3);}
+     else  if(aedSimulation.getUseCaseNumber() == 4){aedSimulation.analyzeHB(4);}
+     else  if(aedSimulation.getUseCaseNumber() == 5){aedSimulation.analyzeHB(5);}
+     else  if(aedSimulation.getUseCaseNumber() == 6){aedSimulation.analyzeHB(6);}
     //aedSimulation.analyzeHB("stable");
     std::cout<<"The scenario is : ";
     std::cout<<aedSimulation.getUseCaseNumber();
@@ -120,7 +146,10 @@ void Scenario::performMouthToMouth(){
 }
 
 void Scenario::onShockButtonClicked(){
+    aedSimulation.deliverShock(shocksNeeded);
+
     qDebug()<<"Shock button Has been Pressed";
+    qDebug()<<shocksNeeded;
 };
 void Scenario::onNextButtonClicked() {
     // Check if the currentFunctionIndex is within the bounds of the actions vector

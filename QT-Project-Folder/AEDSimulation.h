@@ -26,7 +26,7 @@ public:
     void updateSimulation();
     void CPRFinished();
 
-    void deliverShock();
+    void deliverShock(int numOfShocksNeeded);
     void powerOn(int useCaseNumber);
     std::string getCurrentInstruction() const;
     std::string getCurrentTime() const;
@@ -54,9 +54,10 @@ private:
     MainWindow *mainwindow;
     void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
     bool padsPlaced;
+    void displayIMG(QString path);
 
 
-    int shockCount;
+    int shockCount = 0;
     bool powerState;
     int currentStep;
     std::string currentInstruction;

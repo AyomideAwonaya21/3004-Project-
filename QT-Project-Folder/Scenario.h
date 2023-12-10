@@ -27,6 +27,8 @@ public:
     void loadScenario(ScenarioType type);
     void executeScenario();
     void performMouthToMouth();
+    void allowShock();
+    void conductHeartBeatAnalysis();
     //void setWindow(Mainwindow *window);
 public slots:
     void onNextButtonClicked();
@@ -46,13 +48,14 @@ private:
     std::vector<std::function<void()>> actions;
     void onPadsPlaceButtonClicked();
     bool padsPlaced = false;
+    int shocksNeeded;
 
     // These are the steps the machine takes
     void checkPatient();
     void callAmbulance();
     void placePadsOnPatient();
-    void conductHeartBeatAnalysis();
-    void allowShock(); //this is to give patient shock after HB analysis
+//    void conductHeartBeatAnalysis();
+    //void allowShock(); //this is to give patient shock after HB analysis
     void performCPR();
     void waitForAmbulance();
 //    void performMouthToMouth();

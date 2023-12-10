@@ -61,10 +61,17 @@ void AEDSimulation::updateSimulation() {
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 
-void AEDSimulation::deliverShock() {
-    shockCount++;
+void AEDSimulation::deliverShock(int numOfShocksNeeded) {
+    shockCount += 1;
     currentInstruction = "Shock Delivered";
-    currentStep++;
+    //currentStep++;
+    QString shockString = "Shock " + QString::number(shockCount);
+    mainUi->shockText->setPlainText(shockString);
+
+    //If the number of shocks needed is greater than shock count decrement step
+    // so that it can go back to analysing HB
+    if(shockCount < numOfShocksNeeded){currentScenario.conductHeartBeatAnalysis();}
+    else if(shockCount == numOfShocksNeeded){currentStep++;};
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 
@@ -124,32 +131,47 @@ std::string AEDSimulation::formatTime(long seconds) const {
     ss << std::setfill('0') << std::setw(2) << mins << ":" << std::setw(2) << secs;
     return ss.str();
 }
-
+void AEDSimulation::displayIMG(QString path){
+    QImage image(path);
+    if(!image.isNull()){
+         std::cout <<"Image is NOT null"<<std::endl;
+         QPixmap pix(path);
+         QSize labelSize = mainUi->testIMG->size();  // Get the size of the label
+         QPixmap scaledPix = pix.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+         mainUi->testIMG->setPixmap(scaledPix);
+    }
+}
 void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
     currentStep = step == 0?currentStep:step;
     std::cout<<"The step is: ";
     std::cout<<step<<std::endl;
     currentInstruction = instruction;
     //remove the image when not appropriate
-    if(scenario != 4){mainUi->testIMG->setPixmap(QPixmap());}
+    if(step != 4){mainUi->testIMG->setPixmap(QPixmap());}
     if(scenario == 2 && instruction == ""){
-        QString imagePath = QDir::currentPath() + "/Images/Shockable1.png";
+        QString imagePath = QDir::currentPath() + "/Images/Nonshockable1.png";
         currentInstruction = "PEA HB Detected, No shock Needed";
-        QImage image(imagePath);
-        if(!image.isNull()){
-             std::cout <<"Image is NOT null"<<std::endl;
-             QPixmap pix(imagePath);
-             QSize labelSize = mainUi->testIMG->size();  // Get the size of the label
-             QPixmap scaledPix = pix.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-             mainUi->testIMG->setPixmap(scaledPix);
-        }
-        else{
-            std::cout <<"Image is null"<<std::endl;
-        }
+        displayIMG(imagePath);
         qDebug("IT SHOULD DISPLAY IMAGE");
+    }
+    else if(scenario == 3 && instruction == ""){
+        QString imagePath = QDir::currentPath() + "/Images/Nonshockable2.png";
+        currentInstruction = "Flatline HB Detected, No shock Needed";
+        displayIMG(imagePath);
+    }
+    else if(scenario == 4 && instruction == ""){
+        QString imagePath = QDir::currentPath() + "/Images/Shockable1.png";
+        currentInstruction = "Irregular VF HB Detected, Shock Needed";
+        displayIMG(imagePath);
+    }
+    else if(scenario == 5 && instruction == ""){
+        QString imagePath = QDir::currentPath() + "/Images/Shockable2.png";
+        currentInstruction = "Irregular VT HB Detected, Shock Needed";
+        displayIMG(imagePath);
     }
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
+
 bool AEDSimulation::analyzeHB(int scenario){
 
     this->arrhythmiaDetector.analyzeRhythm(scenario); //PASS A VALUE TO THIS
@@ -157,6 +179,11 @@ bool AEDSimulation::analyzeHB(int scenario){
     updateCurrentStepAndInstruction(this->currentStep,this->useCaseNumber , "Analyzing HB ...");
     handleTimeIntervals([this](){
         updateCurrentStepAndInstruction(this->currentStep, this->useCaseNumber, "");
+        if(this->useCaseNumber == 4 || this->useCaseNumber == 5){
+            handleTimeIntervals([this](){
+                currentScenario.allowShock();
+            },2);
+        }
     },2);
 };
 void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {

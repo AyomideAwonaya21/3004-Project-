@@ -31,4 +31,5 @@ std::string CPRFeedback::getFeedback() {
 }
 void CPRFeedback::performCPR(){
     std::cout<<"Performing CPR"<<std::endl;
+    connect(main->, &QPushButton::clicked, this, &CPRButtonListener::onCPRButtonClicked);
 }

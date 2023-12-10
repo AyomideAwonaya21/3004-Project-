@@ -190,8 +190,8 @@ border: none;</string>
    <widget class="QLabel" name="mainImage">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>10</y>
+      <x>90</x>
+      <y>20</y>
       <width>481</width>
       <height>501</height>
      </rect>

@@ -9,9 +9,9 @@ class CPRFeedback {
 public:
     CPRFeedback(Ui::MainWindow* ui);
     ~CPRFeedback();
-
     void evaluateCompressions(int rate, int depth);
     std::string getFeedback();
+    void performCPR();
 
 private:
     int idealRate;

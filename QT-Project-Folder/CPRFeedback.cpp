@@ -29,3 +29,6 @@ void CPRFeedback::updateFeedback(int rate, int depth) {
 std::string CPRFeedback::getFeedback() {
     return currentFeedback; // Return the current feedback
 }
+void CPRFeedback::performCPR(){
+    std::cout<<"Performing CPR"<<std::endl;
+}

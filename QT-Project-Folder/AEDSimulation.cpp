@@ -168,10 +168,8 @@ void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeIn
 
     // Start the timer with the specified interval
     timer->start(timeInSeconds * 1000);  // Convert seconds to milliseconds
-}
+};
 void AEDSimulation::performCPR(){
-    int val = 1;
-    while (val == 1){
-        std::cout<<"About to perform CPR"<<std::endl;
-    }
-}
+    cprFeedback.performCPR();
+
+};

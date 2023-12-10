@@ -1,7 +1,7 @@
 #include "CPRFeedback.h"
 #include <iostream>  // Include the iostream header for std::cout
 
-CPRFeedback::CPRFeedback() : idealRate(100), idealDepth(5) {}
+CPRFeedback::CPRFeedback(Ui::MainWindow* ui) :mainUi(ui), idealRate(100), idealDepth(5) {}
 
 CPRFeedback::~CPRFeedback() {}
 

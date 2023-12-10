@@ -8,7 +8,7 @@ ArrhythmiaDetector::ArrhythmiaDetector() : shockableThreshold(100.0), analysisWi
 
 ArrhythmiaDetector::~ArrhythmiaDetector() {}
 //bool ArrhythmiaDetector::analyzeRhythm(const std::vector<double>& ecgData);
-bool ArrhythmiaDetector::analyzeRhythm(const std::string condition) {
+bool ArrhythmiaDetector::analyzeRhythm(int scenario) { // true if shockable, false it not
 //    for (const auto& data : ecgData) {
 //        recentECGData.push(data);
 //        // Cast recentECGData.size() to int for comparison

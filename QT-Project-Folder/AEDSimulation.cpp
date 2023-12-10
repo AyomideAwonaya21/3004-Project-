@@ -7,7 +7,7 @@
 #include <QString>
 #include <QDir>
 
-AEDSimulation::AEDSimulation(Ui::MainWindow* ui): mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
+AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
     //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
 
     // Initialize QTimer
@@ -76,10 +76,18 @@ void AEDSimulation::powerOn(int useCaseNumber) {
     timer->start();  // Start the timer
     powerState = true;
     currentStep = useCaseNumber;
-    if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::PowerOn);
-    //else if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::PowerOn);
+    this->useCaseNumber = useCaseNumber;
+    if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::SelfCheck);
+    else if(useCaseNumber == 2) currentScenario.loadScenario(ScenarioType::RegualarHBPEA);
+    else if(useCaseNumber == 3) currentScenario.loadScenario(ScenarioType::RegularHBFlatlined);
+    else if(useCaseNumber == 4) currentScenario.loadScenario(ScenarioType::IrregularHBVF);
+    else if(useCaseNumber == 5) currentScenario.loadScenario(ScenarioType::IrregularHBVT);
+    else if(useCaseNumber == 6) currentScenario.loadScenario(ScenarioType::PadsAlreadyOn);
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
+int AEDSimulation::getUseCaseNumber(){
+    return this->useCaseNumber;
+};
 
 std::string AEDSimulation::getCurrentInstruction() const {
     return currentInstruction;
@@ -117,24 +125,21 @@ std::string AEDSimulation::formatTime(long seconds) const {
     return ss.str();
 }
 
-void AEDSimulation::updateCurrentStepAndInstruction(int step, const std::string& instruction) {
-    // if the step is to check the HB then the instruction change to show the graph
-    // Set the main image using the provided path
-    QString imagePath = QDir::currentPath() + "/Images/Shockable1.png";
+void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
     currentStep = step;
     currentInstruction = instruction;
-    if(instruction == "DisplayShockable"){
+    //remove the image when not appropriate
+    if(scenario != 4){mainUi->testIMG->setPixmap(QPixmap());}
+    if(scenario == 2 && instruction == ""){
+        QString imagePath = QDir::currentPath() + "/Images/Shockable1.png";
+        currentInstruction = "PEA HB Detected, No shock Needed";
         QImage image(imagePath);
         if(!image.isNull()){
              std::cout <<"Image is NOT null"<<std::endl;
              QPixmap pix(imagePath);
-             //mainUi->testIMG->setPixmap(pix);
-
-             // Resize the pixmap to fit the size of the label
-                 QSize labelSize = mainUi->testIMG->size();  // Get the size of the label
-                 QPixmap scaledPix = pix.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-                 mainUi->testIMG->setPixmap(scaledPix);
+             QSize labelSize = mainUi->testIMG->size();  // Get the size of the label
+             QPixmap scaledPix = pix.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+             mainUi->testIMG->setPixmap(scaledPix);
         }
         else{
             std::cout <<"Image is null"<<std::endl;
@@ -143,13 +148,13 @@ void AEDSimulation::updateCurrentStepAndInstruction(int step, const std::string&
     }
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
-bool AEDSimulation::analyzeHB(std::string condition){
+bool AEDSimulation::analyzeHB(int scenario){
 
-    this->arrhythmiaDetector.analyzeRhythm(condition);
+    this->arrhythmiaDetector.analyzeRhythm(scenario); //PASS A VALUE TO THIS
     // change display based on shockable or non-shockable
-    updateCurrentStepAndInstruction(this->currentStep, "Analysing HB...");
+    updateCurrentStepAndInstruction(this->currentStep,this->useCaseNumber , "Analyzing HB ...");
     handleTimeIntervals([this](){
-        updateCurrentStepAndInstruction(this->currentStep, "DisplayShockable");
+        updateCurrentStepAndInstruction(this->currentStep, this->useCaseNumber, "");
     },2);
 };
 void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
@@ -163,4 +168,10 @@ void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeIn
 
     // Start the timer with the specified interval
     timer->start(timeInSeconds * 1000);  // Convert seconds to milliseconds
+}
+void AEDSimulation::performCPR(){
+    int val = 1;
+    while (val == 1){
+        std::cout<<"About to perform CPR"<<std::endl;
+    }
 }

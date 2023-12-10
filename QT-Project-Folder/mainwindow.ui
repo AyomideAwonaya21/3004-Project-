@@ -57,7 +57,7 @@ p, li { white-space: pre-wrap; }
      <number>1</number>
     </property>
     <property name="maximum">
-     <number>7</number>
+     <number>6</number>
     </property>
    </widget>
    <widget class="QPushButton" name="confirmBtn">
@@ -78,7 +78,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>30</x>
       <y>140</y>
-      <width>131</width>
+      <width>211</width>
       <height>31</height>
      </rect>
     </property>
@@ -89,7 +89,7 @@ font-weight: bold;
 border: none;</string>
     </property>
     <property name="plainText">
-     <string>1. Turn On AED</string>
+     <string>1. Device Self Check Test</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="plainTextEdit_2">
@@ -108,7 +108,7 @@ font-weight: bold;
 border: none;</string>
     </property>
     <property name="plainText">
-     <string>2. Place Electropads</string>
+     <string>2. Regular HB (PEA)</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="plainTextEdit_3">
@@ -127,7 +127,7 @@ font-weight: bold;
 border: none;</string>
     </property>
     <property name="plainText">
-     <string>3. Analyze Heart Rythm</string>
+     <string>3. Regular HB (Flatlined)</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="plainTextEdit_4">
@@ -135,7 +135,7 @@ border: none;</string>
      <rect>
       <x>30</x>
       <y>290</y>
-      <width>131</width>
+      <width>181</width>
       <height>31</height>
      </rect>
     </property>
@@ -146,7 +146,7 @@ font-weight: bold;
 border: none;</string>
     </property>
     <property name="plainText">
-     <string>4. Deliver Shock</string>
+     <string>4. Irregular HB (VF)</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="plainTextEdit_5">
@@ -154,25 +154,6 @@ border: none;</string>
      <rect>
       <x>30</x>
       <y>340</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: grey;
-color: black;
-font-weight: bold;
-border: none;</string>
-    </property>
-    <property name="plainText">
-     <string>5. Perform CPR</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit_6">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>390</y>
       <width>161</width>
       <height>31</height>
      </rect>
@@ -184,7 +165,26 @@ font-weight: bold;
 border: none;</string>
     </property>
     <property name="plainText">
-     <string>6. Monitor Patient</string>
+     <string>5. Irregular HB (VT)</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="plainTextEdit_6">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>390</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: grey;
+color: black;
+font-weight: bold;
+border: none;</string>
+    </property>
+    <property name="plainText">
+     <string>6. Pad Already on Patient</string>
     </property>
    </widget>
    <widget class="QLabel" name="mainImage">
@@ -377,9 +377,9 @@ background-color: grey;</string>
    <widget class="QTextEdit" name="instructionText">
     <property name="geometry">
      <rect>
-      <x>403</x>
-      <y>200</y>
-      <width>151</width>
+      <x>400</x>
+      <y>210</y>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -414,9 +414,9 @@ background-color: grey;</string>
     <property name="geometry">
      <rect>
       <x>400</x>
-      <y>200</y>
+      <y>210</y>
       <width>161</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">

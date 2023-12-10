@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QPushButton>
 
-Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui), currentType(ScenarioType::BasicLifeSupport) {
+Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui) {
     connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
 }
 
@@ -20,10 +20,10 @@ void Scenario::loadScenario(ScenarioType type) {
 }
 
 void Scenario::executeScenario() {
-    if (currentType == ScenarioType::Unknown) {
-        std::cout << "No scenario loaded." << std::endl;
-        return;
-    }
+//    if (currentType == ScenarioType::Unknown) {
+//        std::cout << "No scenario loaded." << std::endl;
+//        return;
+//    }
     //std::cout << "Executing Scenario: " << description << std::endl;
     processExecution();
 }
@@ -46,24 +46,30 @@ void Scenario::initializeScenario(ScenarioType type) {
     mainUi.padsOn->setStyleSheet("background-color: red;");
     connect(mainUi.placePadsButton, &QPushButton::clicked, this, &Scenario::onPadsPlaceButtonClicked);
     switch (type) {
-        case ScenarioType::PowerOn:
-            std::cout<<"HERE------"<<std::endl;
+        case ScenarioType::SelfCheck:
+            std::cout<<"Self check completed, Batter 100%, pads aer functional. Ready to Operate"<<std::endl;
+            break;
+        case ScenarioType::RegualarHBPEA:
+            description = "Basic Life Support Scenario";
             checkPatient();
             actions = {
                 [this]() { callAmbulance(); },
                 [this]() { placePadsOnPatient(); },
-                [this]() { conductHeartBeatAnalysis(); }
+                [this]() { conductHeartBeatAnalysis(); },
+                [this]() { CPRAndMouthToMouth(); }
             };
             break;
-        case ScenarioType::BasicLifeSupport:
-            description = "Basic Life Support Scenario";
-            //actions = {"Check responsiveness", "Call for help", "Perform CPR"};
-            break;
-        case ScenarioType::AdvancedCardiacLifeSupport:
+        case ScenarioType::RegularHBFlatlined:
             description = "Advanced Cardiac Life Support Scenario";
             //actions = {"Use defibrillator", "Administer medication", "Continue CPR"};
             break;
         // Additional scenarios...
+        case ScenarioType:: IrregularHBVF:
+            break;
+        case ScenarioType:: IrregularHBVT:
+            break;
+        case ScenarioType::PadsAlreadyOn:
+            break;
         default:
             description = "Unknown Scenario";
             actions.clear();
@@ -79,29 +85,33 @@ void Scenario::processExecution() {
 }
 void Scenario::checkPatient(){
     // set the AEDSimulation text and step, that function will then update GUI
-    aedSimulation.updateCurrentStepAndInstruction(1, "Check Patient Responsiveness");
+    aedSimulation.updateCurrentStepAndInstruction(1,aedSimulation.getUseCaseNumber(), "Check Patient Responsiveness");
     //play audio here
 };
 void Scenario::callAmbulance(){
-    aedSimulation.updateCurrentStepAndInstruction(2, "Call Ambulance");
+    aedSimulation.updateCurrentStepAndInstruction(2,aedSimulation.getUseCaseNumber(), "Call Ambulance");
 };
 void Scenario::placePadsOnPatient(){
-    aedSimulation.updateCurrentStepAndInstruction(3, "Place Pads");
+    aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Place Pads");
 
 };
 void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
-    aedSimulation.updateCurrentStepAndInstruction(4, "Checking HB");
-    aedSimulation.analyzeHB("stable");
+    aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
+    if(aedSimulation.getUseCaseNumber() == 2){aedSimulation.analyzeHB(2);}
+    //aedSimulation.analyzeHB("stable");
+    std::cout<<"The scenario is : ";
+    std::cout<<aedSimulation.getUseCaseNumber();
 };
 void Scenario::allowShock(){
-    aedSimulation.updateCurrentStepAndInstruction(5, "Apply Shock");
+    aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
     // Connect the clicked signal of shockButton to onShockButtonClicked slot
     QObject::connect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
 
 }; //this is to give patient shock after HB analysis
 void Scenario::CPRAndMouthToMouth(){
-    aedSimulation.updateCurrentStepAndInstruction(6, "Perform CPR");
+    aedSimulation.performCPR();
+    aedSimulation.updateCurrentStepAndInstruction(6,aedSimulation.getUseCaseNumber(), "Perform CPR");
 };
 
 void Scenario::onShockButtonClicked(){

@@ -7,14 +7,15 @@
 #include <QObject>
 #include <QPushButton>
 #include "ui_mainwindow.h"
+
 class AEDSimulation;
 enum class ScenarioType {
-    PowerOn,
-    BasicLifeSupport,
-    AdvancedCardiacLifeSupport,
-    ChokingEmergency,
-    DrowningResponse,
-    Unknown
+    SelfCheck,
+    RegualarHBPEA,
+    RegularHBFlatlined,
+    IrregularHBVF,
+    IrregularHBVT,
+    PadsAlreadyOn
 };
 
 class Scenario: public QObject {

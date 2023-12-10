@@ -32,14 +32,17 @@ public:
     int getShockCount() const;
     bool isPoweredOn() const;
     int getCurrentStep() const;
-    void updateCurrentStepAndInstruction(int step, const std::string& instruction);
-    bool analyzeHB(std::string condition); // calls the arrhythmiaDetector to analyze HB
+    void updateCurrentStepAndInstruction(int step, int scenario, const std::string&instruction);
+    bool analyzeHB(int scenario); // calls the arrhythmiaDetector to analyze HB
+    int getUseCaseNumber();
+    void performCPR();
 
 signals:
     void updateInterfaceSignal();
     void currentTimeUpdated();
 
 private:
+    int useCaseNumber;
     AEDInterface interface;
     ArrhythmiaDetector arrhythmiaDetector;
     CPRFeedback cprFeedback;
@@ -50,6 +53,7 @@ private:
     MainWindow *mainwindow;
     void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
     bool padsPlaced;
+
 
     int shockCount;
     bool powerState;

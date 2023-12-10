@@ -10,7 +10,7 @@ public:
     ~ArrhythmiaDetector();
 
 //    bool analyzeRhythm(const std::vector<double>& ecgData);
-     bool analyzeRhythm(const std::string condition);
+     bool analyzeRhythm(int scenario);
 
 private:
     std::queue<double> recentECGData; // Queue to store recent ECG data

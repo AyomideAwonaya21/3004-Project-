@@ -62,16 +62,24 @@ void AEDSimulation::updateSimulation() {
 }
 
 void AEDSimulation::deliverShock(int numOfShocksNeeded) {
+    std::cout<<"The shock count at the begining is: ";
+    std::cout<<shockCount<<std::endl;
     shockCount += 1;
+    std::cout<<"The shock needed: ";
+    std::cout<<numOfShocksNeeded;
+    std::cout<<" Current shock given: ";
+    std::cout<<shockCount<<std::endl;
     currentInstruction = "Shock Delivered";
     //currentStep++;
     QString shockString = "Shock " + QString::number(shockCount);
     mainUi->shockText->setPlainText(shockString);
 
+    currentScenario.conductHeartBeatAnalysis();
+
     //If the number of shocks needed is greater than shock count decrement step
     // so that it can go back to analysing HB
-    if(shockCount < numOfShocksNeeded){currentScenario.conductHeartBeatAnalysis();}
-    else if(shockCount == numOfShocksNeeded){currentStep++;};
+    //if(shockCount < numOfShocksNeeded){currentScenario.conductHeartBeatAnalysis();}
+    //else if(shockCount == numOfShocksNeeded || shockCount > numOfShocksNeeded){currentStep++;};
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 
@@ -134,7 +142,6 @@ std::string AEDSimulation::formatTime(long seconds) const {
 void AEDSimulation::displayIMG(QString path){
     QImage image(path);
     if(!image.isNull()){
-         std::cout <<"Image is NOT null"<<std::endl;
          QPixmap pix(path);
          QSize labelSize = mainUi->testIMG->size();  // Get the size of the label
          QPixmap scaledPix = pix.scaled(labelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -143,8 +150,6 @@ void AEDSimulation::displayIMG(QString path){
 }
 void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
     currentStep = step == 0?currentStep:step;
-    std::cout<<"The step is: ";
-    std::cout<<step<<std::endl;
     currentInstruction = instruction;
     //remove the image when not appropriate
     if(step != 4){mainUi->testIMG->setPixmap(QPixmap());}
@@ -181,6 +186,11 @@ bool AEDSimulation::analyzeHB(int scenario){
         updateCurrentStepAndInstruction(this->currentStep, this->useCaseNumber, "");
         if(this->useCaseNumber == 4 || this->useCaseNumber == 5){
             handleTimeIntervals([this](){
+                if(shockCount == currentScenario.getShocksNeeded()){
+//                    updateCurrentStepAndInstruction(this->currentStep+2, this->useCaseNumber, "");
+                    currentScenario.onNextButtonClicked();
+                    return;
+                }
                 currentScenario.allowShock();
             },2);
         }

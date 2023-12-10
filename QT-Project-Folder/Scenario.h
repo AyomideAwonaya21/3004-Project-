@@ -29,6 +29,7 @@ public:
     void performMouthToMouth();
     void allowShock();
     void conductHeartBeatAnalysis();
+    int getShocksNeeded();
     //void setWindow(Mainwindow *window);
 public slots:
     void onNextButtonClicked();

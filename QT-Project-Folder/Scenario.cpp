@@ -132,6 +132,9 @@ void Scenario::conductHeartBeatAnalysis(){
 };
 void Scenario::allowShock(){
     aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
+    // Disconnect the existing connection (if any)
+        QObject::disconnect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
+
     // Connect the clicked signal of shockButton to onShockButtonClicked slot
     QObject::connect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
 
@@ -149,7 +152,7 @@ void Scenario::onShockButtonClicked(){
     aedSimulation.deliverShock(shocksNeeded);
 
     qDebug()<<"Shock button Has been Pressed";
-    qDebug()<<shocksNeeded;
+    qDebug()<<aedSimulation.getShockCount();
 };
 void Scenario::onNextButtonClicked() {
     // Check if the currentFunctionIndex is within the bounds of the actions vector
@@ -175,6 +178,9 @@ void Scenario::onPadsPlaceButtonClicked() {
 }
 void Scenario:: waitForAmbulance(){
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Monitor Patient While Ambulance Comes");
+}
+int Scenario::getShocksNeeded(){
+    return this->shocksNeeded;
 }
 
 

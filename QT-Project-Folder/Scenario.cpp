@@ -56,7 +56,8 @@ void Scenario::initializeScenario(ScenarioType type) {
                 [this]() { callAmbulance(); },
                 [this]() { placePadsOnPatient(); },
                 [this]() { conductHeartBeatAnalysis(); },
-                [this]() { CPRAndMouthToMouth(); }
+                [this]() { performCPR();},
+                 [this]() { waitForAmbulance();},
             };
             break;
         case ScenarioType::RegularHBFlatlined:
@@ -109,10 +110,14 @@ void Scenario::allowShock(){
     QObject::connect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
 
 }; //this is to give patient shock after HB analysis
-void Scenario::CPRAndMouthToMouth(){
-    aedSimulation.performCPR();
+void Scenario::performCPR(){
     aedSimulation.updateCurrentStepAndInstruction(6,aedSimulation.getUseCaseNumber(), "Perform CPR");
+    aedSimulation.performCPR();
 };
+void Scenario::performMouthToMouth(){
+    aedSimulation.updateCurrentStepAndInstruction(7,aedSimulation.getUseCaseNumber(), "Perform Mouth To Mouth");
+
+}
 
 void Scenario::onShockButtonClicked(){
     qDebug()<<"Shock button Has been Pressed";
@@ -138,6 +143,9 @@ void Scenario::onPadsPlaceButtonClicked() {
     // Change the color of mainUi->padsOn to green
     mainUi.padsOn->setStyleSheet("background-color: green;");
     this->padsPlaced = true;
+}
+void Scenario:: waitForAmbulance(){
+    aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Monitor Patient While Ambulance Comes");
 }
 
 

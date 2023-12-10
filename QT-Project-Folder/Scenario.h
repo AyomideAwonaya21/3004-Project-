@@ -26,6 +26,7 @@ public:
 
     void loadScenario(ScenarioType type);
     void executeScenario();
+    void performMouthToMouth();
     //void setWindow(Mainwindow *window);
 public slots:
     void onNextButtonClicked();
@@ -52,7 +53,9 @@ private:
     void placePadsOnPatient();
     void conductHeartBeatAnalysis();
     void allowShock(); //this is to give patient shock after HB analysis
-    void CPRAndMouthToMouth();
+    void performCPR();
+    void waitForAmbulance();
+//    void performMouthToMouth();
 
     // this should be set to the parent windown so the button can be turned green
 //    MainWindow *mainWindow;

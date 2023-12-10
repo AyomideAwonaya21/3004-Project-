@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->mainImage->setPixmap(pix);
 
     // this is for the timer
-    ui->timeText->setPlainText("00:01");
+    ui->timeText->setPlainText("00:00");
 
     // Connect buttons to their respective slots
     //connect(ui->shockButton, &QPushButton::clicked, this, &MainWindow::on_shockButton_clicked);
@@ -82,4 +82,6 @@ void MainWindow::updateCheckpoints(int step) {
     ui->checkPoint4->setStyleSheet(step == 4 ? "background-color: green;" : "background-color: grey;");
     ui->checkPoint5->setStyleSheet(step == 5 ? "background-color: green;" : "background-color: grey;");
     ui->checkPoint6->setStyleSheet(step == 6 ? "background-color: green;" : "background-color: grey;");
+    ui->checkPoint7->setStyleSheet(step == 7 ? "background-color: green;" : "background-color: grey;");
+
 }

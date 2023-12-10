@@ -24,6 +24,7 @@ public:
     void stopSimulation();
     void simulateECGData();
     void updateSimulation();
+    void CPRFinished();
 
     void deliverShock();
     void powerOn(int useCaseNumber);

@@ -190,8 +190,8 @@ border: none;</string>
    <widget class="QLabel" name="mainImage">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>20</y>
+      <x>260</x>
+      <y>0</y>
       <width>481</width>
       <height>501</height>
      </rect>
@@ -461,6 +461,19 @@ background-color: grey;</string>
     </property>
     <property name="text">
      <string>Place Pads</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CPRButton">
+    <property name="geometry">
+     <rect>
+      <x>342</x>
+      <y>400</y>
+      <width>41</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CPR</string>
     </property>
    </widget>
   </widget>

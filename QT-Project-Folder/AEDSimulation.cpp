@@ -7,11 +7,11 @@
 #include <QString>
 #include <QDir>
 
-AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
+AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this,ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
     //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
 
     // Initialize QTimer
-    timer = new QTimer(this);
+    timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &AEDSimulation::updateSimulation);
     timer->start(500);  // Update every 500 milliseconds
 }
@@ -126,7 +126,9 @@ std::string AEDSimulation::formatTime(long seconds) const {
 }
 
 void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
-    currentStep = step;
+    currentStep = step == 0?currentStep:step;
+    std::cout<<"The step is: ";
+    std::cout<<step<<std::endl;
     currentInstruction = instruction;
     //remove the image when not appropriate
     if(scenario != 4){mainUi->testIMG->setPixmap(QPixmap());}
@@ -171,5 +173,8 @@ void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeIn
 };
 void AEDSimulation::performCPR(){
     cprFeedback.performCPR();
-
 };
+void AEDSimulation::CPRFinished(){
+    std::cout<<"CPR IS DONE BRO-----"<<std::endl;
+    currentScenario.performMouthToMouth();
+}

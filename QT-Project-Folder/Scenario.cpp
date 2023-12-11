@@ -53,6 +53,7 @@ void Scenario::initializeScenario(ScenarioType type) {
     connect(mainUi.placePadsButton, &QPushButton::clicked, this, &Scenario::onPadsPlaceButtonClicked);
     switch (type) {
         case ScenarioType::SelfCheck:
+        selfCheck();
             std::cout<<"Self check completed, Batter 100%, pads aer functional. Ready to Operate"<<std::endl;
             break;
         case ScenarioType::RegualarHBPEA:
@@ -93,6 +94,9 @@ void Scenario::initializeScenario(ScenarioType type) {
             break;
         case ScenarioType::PadsAlreadyOn:
             break;
+       case ScenarioType::BatterLifeLow:
+
+             break;
         default:
             description = "Unknown Scenario";
             actions.clear();
@@ -110,13 +114,17 @@ void Scenario::checkPatient(){
     // set the AEDSimulation text and step, that function will then update GUI
     aedSimulation.updateCurrentStepAndInstruction(1,aedSimulation.getUseCaseNumber(), "Check Patient Responsiveness");
     //play audio here
+
 };
 void Scenario::callAmbulance(){
     aedSimulation.updateCurrentStepAndInstruction(2,aedSimulation.getUseCaseNumber(), "Call Ambulance");
+    //change battery life
+    aedSimulation.depleteBattery(5);
 };
 void Scenario::placePadsOnPatient(){
     aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Place Pads");
-
+    //change battery life
+    aedSimulation.depleteBattery(5);
 };
 void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
@@ -126,9 +134,7 @@ void Scenario::conductHeartBeatAnalysis(){
      else  if(aedSimulation.getUseCaseNumber() == 4){aedSimulation.analyzeHB(4);}
      else  if(aedSimulation.getUseCaseNumber() == 5){aedSimulation.analyzeHB(5);}
      else  if(aedSimulation.getUseCaseNumber() == 6){aedSimulation.analyzeHB(6);}
-    //aedSimulation.analyzeHB("stable");
-    std::cout<<"The scenario is : ";
-    std::cout<<aedSimulation.getUseCaseNumber();
+
 };
 void Scenario::allowShock(){
     aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
@@ -142,19 +148,26 @@ void Scenario::allowShock(){
 void Scenario::performCPR(){
     aedSimulation.updateCurrentStepAndInstruction(6,aedSimulation.getUseCaseNumber(), "Perform CPR");
     aedSimulation.performCPR();
+//    //change battery life
+//    aedSimulation.depleteBattery(10);
 };
 void Scenario::performMouthToMouth(){
     aedSimulation.updateCurrentStepAndInstruction(7,aedSimulation.getUseCaseNumber(), "Perform Mouth To Mouth");
-
+    //change battery life
+    aedSimulation.depleteBattery(5);
 }
 
 void Scenario::onShockButtonClicked(){
     aedSimulation.deliverShock(shocksNeeded);
 
-    qDebug()<<"Shock button Has been Pressed";
-    qDebug()<<aedSimulation.getShockCount();
+    //change battery life
+    aedSimulation.depleteBattery(10);
 };
 void Scenario::onNextButtonClicked() {
+    if(currentFunctionIndex == 2&& this->padsPlaced == false){
+        std::cout<<"PADS ARE NOT PLACE"<<std::endl;
+        return;
+    }
     // Check if the currentFunctionIndex is within the bounds of the actions vector
     if (currentFunctionIndex < actions.size()) {
         // Execute the function at the current index
@@ -163,11 +176,15 @@ void Scenario::onNextButtonClicked() {
         // Increment the index for the next function
         //check to see if pads are placed before moving to next step
         std::cout<<"The function index is: ";
-        std::cout<<currentFunctionIndex<<std::endl;
-        if(currentFunctionIndex == 1 && this->padsPlaced == false){
-            std::cout<<"PADS ARE NOT PLACE"<<std::endl;
-        }
-        else{++currentFunctionIndex;};
+        std::cout<<currentFunctionIndex;
+        std::cout<<" and the pads are: ";
+        std::cout<<this->padsPlaced<<std::endl;
+//        if(currentFunctionIndex == 1&& this->padsPlaced == false){
+//            std::cout<<"PADS ARE NOT PLACE"<<std::endl;
+//            return;
+//        }
+//        else{currentFunctionIndex++;};
+        currentFunctionIndex++;
 
     }
 };
@@ -178,9 +195,14 @@ void Scenario::onPadsPlaceButtonClicked() {
 }
 void Scenario:: waitForAmbulance(){
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Monitor Patient While Ambulance Comes");
+
 }
 int Scenario::getShocksNeeded(){
     return this->shocksNeeded;
+}
+void Scenario::selfCheck(){
+
+    aedSimulation.updateCurrentStepAndInstruction(0,aedSimulation.getUseCaseNumber(), "Self check complete, battery is full, pads are available. Ready to operate!");
 }
 
 

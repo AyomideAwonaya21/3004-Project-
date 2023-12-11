@@ -18,7 +18,7 @@ bool ArrhythmiaDetector::analyzeRhythm(int scenario) { // true if shockable, fal
 //    }
 
 //    return isRhythmShockable(ecgData);
-    qDebug() << "Trying to analyze the HB";
+    qDebug() << "In the arrythmaia CLass";
     return true;
 }
 

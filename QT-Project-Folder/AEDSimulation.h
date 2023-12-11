@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "ui_mainwindow.h"
+#include "Battery.h"
 class MainWindow;
 
 class AEDSimulation : public QObject {
@@ -37,6 +38,9 @@ public:
     bool analyzeHB(int scenario); // calls the arrhythmiaDetector to analyze HB
     int getUseCaseNumber();
     void performCPR();
+    void setBatteryLife(int value);
+    int getBatteryLife();
+    void depleteBattery(int value);
 
 signals:
     void updateInterfaceSignal();
@@ -55,6 +59,8 @@ private:
     void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
     bool padsPlaced;
     void displayIMG(QString path);
+    int batteryLife;
+    Battery battery;
 
 
     int shockCount = 0;

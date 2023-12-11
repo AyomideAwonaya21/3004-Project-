@@ -59,6 +59,8 @@ public:
     QPushButton *placePadsButton;
     QPushButton *CPRButton;
     QSpinBox *depthNumber;
+    QPlainTextEdit *batteryText;
+    QPlainTextEdit *plainTextEdit_7;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -80,7 +82,7 @@ public:
         useCaseNumber->setObjectName(QString::fromUtf8("useCaseNumber"));
         useCaseNumber->setGeometry(QRect(30, 90, 45, 26));
         useCaseNumber->setMinimum(1);
-        useCaseNumber->setMaximum(6);
+        useCaseNumber->setMaximum(7);
         confirmBtn = new QPushButton(centralwidget);
         confirmBtn->setObjectName(QString::fromUtf8("confirmBtn"));
         confirmBtn->setGeometry(QRect(120, 90, 83, 25));
@@ -131,7 +133,7 @@ public:
         mainImage->setGeometry(QRect(260, 0, 481, 501));
         centerDisplay = new QTextBrowser(centralwidget);
         centerDisplay->setObjectName(QString::fromUtf8("centerDisplay"));
-        centerDisplay->setGeometry(QRect(400, 180, 161, 81));
+        centerDisplay->setGeometry(QRect(400, 180, 161, 101));
         centerDisplay->setStyleSheet(QString::fromUtf8("background-color:white;"));
         checkPoint1 = new QTextBrowser(centralwidget);
         checkPoint1->setObjectName(QString::fromUtf8("checkPoint1"));
@@ -198,7 +200,7 @@ public:
 "background-color: grey;"));
         testIMG = new QLabel(centralwidget);
         testIMG->setObjectName(QString::fromUtf8("testIMG"));
-        testIMG->setGeometry(QRect(400, 210, 161, 71));
+        testIMG->setGeometry(QRect(400, 230, 161, 71));
         padsOn = new QTextBrowser(centralwidget);
         padsOn->setObjectName(QString::fromUtf8("padsOn"));
         padsOn->setGeometry(QRect(630, 240, 16, 16));
@@ -217,6 +219,17 @@ public:
         depthNumber->setObjectName(QString::fromUtf8("depthNumber"));
         depthNumber->setGeometry(QRect(290, 400, 45, 26));
         depthNumber->setMaximum(5);
+        batteryText = new QPlainTextEdit(centralwidget);
+        batteryText->setObjectName(QString::fromUtf8("batteryText"));
+        batteryText->setGeometry(QRect(470, 150, 91, 31));
+        batteryText->setStyleSheet(QString::fromUtf8("font-size: 10px;"));
+        plainTextEdit_7 = new QPlainTextEdit(centralwidget);
+        plainTextEdit_7->setObjectName(QString::fromUtf8("plainTextEdit_7"));
+        plainTextEdit_7->setGeometry(QRect(30, 440, 161, 31));
+        plainTextEdit_7->setStyleSheet(QString::fromUtf8("background-color: grey;\n"
+"color: black;\n"
+"font-weight: bold;\n"
+"border: none;"));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -260,6 +273,8 @@ public:
         nextButton->setText(QCoreApplication::translate("MainWindow", "NEXT", nullptr));
         placePadsButton->setText(QCoreApplication::translate("MainWindow", "Place Pads", nullptr));
         CPRButton->setText(QCoreApplication::translate("MainWindow", "CPR", nullptr));
+        batteryText->setPlainText(QCoreApplication::translate("MainWindow", "Battery 100%", nullptr));
+        plainTextEdit_7->setPlainText(QCoreApplication::translate("MainWindow", "7. Low Battery Life", nullptr));
     } // retranslateUi
 
 };

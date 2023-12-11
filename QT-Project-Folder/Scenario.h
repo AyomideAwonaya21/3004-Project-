@@ -15,7 +15,8 @@ enum class ScenarioType {
     RegularHBFlatlined,
     IrregularHBVF,
     IrregularHBVT,
-    PadsAlreadyOn
+    PadsAlreadyOn,
+    BatterLifeLow
 };
 
 class Scenario: public QObject {
@@ -60,6 +61,7 @@ private:
     void performCPR();
     void waitForAmbulance();
 //    void performMouthToMouth();
+    void selfCheck();
 
     // this should be set to the parent windown so the button can be turned green
 //    MainWindow *mainWindow;

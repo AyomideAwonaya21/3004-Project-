@@ -7,7 +7,7 @@
 #include <QString>
 #include <QDir>
 
-AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this,ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0) {
+AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this,ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0), battery(100) {
     //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
 
     // Initialize QTimer
@@ -84,8 +84,9 @@ void AEDSimulation::deliverShock(int numOfShocksNeeded) {
 }
 
 void AEDSimulation::powerOn(int useCaseNumber) {
-
+    batteryLife = useCaseNumber == 7? 5:100;
     simulationRunning = true;
+    this->battery.resetBattery();
     powerState = true;
     currentTime = "00:00";
     timer->start();  // Start the timer
@@ -150,6 +151,10 @@ void AEDSimulation::displayIMG(QString path){
 }
 void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
     mainUi->instructionText->setFontPointSize(10);
+    if(step == 0){//this is for the self check test message because it is long
+        mainUi->instructionText->setFontPointSize(7);
+    }
+
     currentStep = step == 0?currentStep:step;
     currentInstruction = instruction;
     //remove the image when not appropriate
@@ -158,7 +163,7 @@ void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const
         QString imagePath = QDir::currentPath() + "/Images/Nonshockable1.png";
         currentInstruction = "PEA HB Detected, No shock Needed";
         displayIMG(imagePath);
-        qDebug("IT SHOULD DISPLAY IMAGE");
+        //qDebug("IT SHOULD DISPLAY IMAGE");
     }
     else if(scenario == 3 && instruction == ""){
         QString imagePath = QDir::currentPath() + "/Images/Nonshockable2.png";
@@ -196,6 +201,8 @@ bool AEDSimulation::analyzeHB(int scenario){
             },2);
         }
     },2);
+    //change battery life
+    this->depleteBattery(10);
 };
 void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
     QTimer* timer = new QTimer();
@@ -215,4 +222,14 @@ void AEDSimulation::performCPR(){
 void AEDSimulation::CPRFinished(){
     std::cout<<"CPR IS DONE BRO-----"<<std::endl;
     currentScenario.performMouthToMouth();
+}
+void AEDSimulation::setBatteryLife(int value){
+    this->batteryLife = value;
+};
+int AEDSimulation::getBatteryLife(){
+    return this->battery.getBatteryLife();
+}
+void AEDSimulation::depleteBattery(int value){
+    this->battery.decreaseBatteryLife(value);
+    //emit updateInterfaceSignal();
 }

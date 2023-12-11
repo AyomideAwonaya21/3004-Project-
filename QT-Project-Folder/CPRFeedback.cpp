@@ -121,6 +121,7 @@ void CPRFeedback::onCPRButtonClicked() {
         std::cout<<"Go to mouth to mouth"<<std::endl;
         disconnectCPRButton();
         aedSimulation.CPRFinished();
+        aedSimulation.depleteBattery(5);
         return;
     }
     // Get the current timestamp

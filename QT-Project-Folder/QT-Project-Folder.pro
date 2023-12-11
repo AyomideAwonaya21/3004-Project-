@@ -12,6 +12,7 @@ SOURCES += \
     AEDInterface.cpp \
     AEDSimulation.cpp \
     ArrhythmiaDetector.cpp \
+    Battery.cpp \
     CPRFeedback.cpp \
     Scenario.cpp \
     main.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
     AEDInterface.h \
     AEDSimulation.h \
     ArrhythmiaDetector.h \
+    Battery.h \
     CPRFeedback.h \
     Scenario.h \
     mainwindow.h

@@ -3,6 +3,7 @@
 #include <QPixmap>
 #include <QDir>
 #include <QDebug>
+#include <sstream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -68,6 +69,25 @@ void MainWindow::updateInterface() {
     ui->timeText->setPlainText(QString::fromStdString(aedSimulation->getCurrentTime()));
     ui->shockText->setPlainText(QString("SHOCKS ") + QString::number(aedSimulation->getShockCount()));
     ui->onSignal->setStyleSheet(aedSimulation->isPoweredOn() ? "background-color: green;" : "background-color: grey;");
+
+    std::stringstream feedbackStream;
+    feedbackStream << "Batter: " << aedSimulation->getBatteryLife()<<"%";
+     std::string batteryString = feedbackStream.str();
+
+
+     QString batteryText = QString::fromStdString(batteryString);
+     QString styleSheet;
+
+     if (aedSimulation->getBatteryLife() < 100 && aedSimulation->getBatteryLife() > 70) {
+         styleSheet = "background-color: lightgreen; font-size: 10px;";
+     } else if (aedSimulation->getBatteryLife() <= 70 && aedSimulation->getBatteryLife() >= 50) {
+         styleSheet = "background-color: lightyellow; font-size: 10px;";
+     } else if (aedSimulation->getBatteryLife() < 50) {
+         styleSheet = "background-color: red; font-size: 10px;";
+     }
+
+     ui->batteryText->setPlainText(batteryText);
+     ui->batteryText->setStyleSheet(styleSheet);
 
     // Update the checkpoint indicators based on the current step of the simulation
     updateCheckpoints(aedSimulation->getCurrentStep());

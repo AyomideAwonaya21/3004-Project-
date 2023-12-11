@@ -51,6 +51,7 @@ private:
     void onPadsPlaceButtonClicked();
     bool padsPlaced = false;
     int shocksNeeded;
+    void batteryLow();
 
     // These are the steps the machine takes
     void checkPatient();

@@ -93,11 +93,26 @@ void Scenario::initializeScenario(ScenarioType type) {
              };
             break;
         case ScenarioType:: IrregularHBVT:
+        checkPatient();
+        actions = {
+           [this]() { callAmbulance(); },
+           [this]() { placePadsOnPatient(); },
+           [this]() { conductHeartBeatAnalysis(); },
+           [this]() { performCPR();},
+            [this]() { waitForAmbulance();},
+            };
             break;
         case ScenarioType::PadsAlreadyOn:
+        aedSimulation.setCurrentUseCaseNumber(2);
+        onPadsPlaceButtonClicked();
+        conductHeartBeatAnalysis();
+        actions = {
+           [this]() { performCPR();},
+            [this]() { waitForAmbulance();},
+            };
             break;
        case ScenarioType::BatterLifeLow:
-
+                batteryLow();
              break;
         default:
             description = "Unknown Scenario";
@@ -212,8 +227,11 @@ int Scenario::getShocksNeeded(){
     return this->shocksNeeded;
 }
 void Scenario::selfCheck(){
-
     aedSimulation.updateCurrentStepAndInstruction(0,aedSimulation.getUseCaseNumber(), "Self check complete, battery is full, pads are available. Ready to operate!");
+}
+void Scenario::batteryLow(){
+    aedSimulation.depleteBattery(95);
+    aedSimulation.updateCurrentStepAndInstruction(0,0, "Battery too low, please change batteries before proceeding");
 }
 
 

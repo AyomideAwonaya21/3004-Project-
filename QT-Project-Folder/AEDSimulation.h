@@ -41,6 +41,7 @@ public:
     void setBatteryLife(int value);
     int getBatteryLife();
     void depleteBattery(int value);
+    void setCurrentUseCaseNumber(int value);
 
 signals:
     void updateInterfaceSignal();

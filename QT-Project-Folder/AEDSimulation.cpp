@@ -19,7 +19,9 @@ AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this,ui), mainUi(u
 AEDSimulation::~AEDSimulation() {
     delete timer;
 }
-
+void AEDSimulation::setCurrentUseCaseNumber(int value){
+    this->useCaseNumber = value;
+};
 void AEDSimulation::startSimulation(int useCaseNumber) {
     simulationRunning = true;
     powerState = true;
@@ -99,6 +101,7 @@ void AEDSimulation::powerOn(int useCaseNumber) {
     else if(useCaseNumber == 4) currentScenario.loadScenario(ScenarioType::IrregularHBVF);
     else if(useCaseNumber == 5) currentScenario.loadScenario(ScenarioType::IrregularHBVT);
     else if(useCaseNumber == 6) currentScenario.loadScenario(ScenarioType::PadsAlreadyOn);
+    else if(useCaseNumber == 7) currentScenario.loadScenario(ScenarioType::BatterLifeLow);
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 int AEDSimulation::getUseCaseNumber(){

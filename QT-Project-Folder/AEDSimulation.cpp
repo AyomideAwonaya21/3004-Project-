@@ -149,6 +149,7 @@ void AEDSimulation::displayIMG(QString path){
     }
 }
 void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
+    mainUi->instructionText->setFontPointSize(10);
     currentStep = step == 0?currentStep:step;
     currentInstruction = instruction;
     //remove the image when not appropriate

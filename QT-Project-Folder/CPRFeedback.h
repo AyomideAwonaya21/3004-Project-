@@ -28,6 +28,8 @@ private:
     AEDSimulation& aedSimulation;
     int goodCompressionCount = 0;
     std::string compressionStatus ="bad";
+    int compressionDepth;
+    void onDepthNumberValueChanged(int value);
 
     void connectCPRButton();
         void disconnectCPRButton();

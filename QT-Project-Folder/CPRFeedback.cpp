@@ -117,7 +117,7 @@ void CPRFeedback::performCPR() {
 }
 
 void CPRFeedback::onCPRButtonClicked() {
-    if(goodCompressionCount == 10){
+    if(goodCompressionCount == 20){
         std::cout<<"Go to mouth to mouth"<<std::endl;
         disconnectCPRButton();
         aedSimulation.CPRFinished();

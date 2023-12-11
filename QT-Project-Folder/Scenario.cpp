@@ -7,7 +7,7 @@
 #include <random>
 #include <iostream>
 #include <QDir>
-#include <QMediaPlayer>
+//#include <QMediaPlayer>
 
 Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui) {
     connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
@@ -117,17 +117,15 @@ void Scenario::checkPatient(){
     aedSimulation.updateCurrentStepAndInstruction(1,aedSimulation.getUseCaseNumber(), "Check Patient Responsiveness");
     //play audio here
 //    QString imagePath = QDir::currentPath() + "/Auuuuudioable1.png";
+
     // Play audio here
-        QString audioPath = QDir::currentPath() + "/Audio/CheckPatient.mp3";
-
-        // Create a QMediaPlayer instance
-        QMediaPlayer* mediaPlayer = new QMediaPlayer;
-
-        // Set the media content
-        mediaPlayer->setMedia(QUrl::fromLocalFile(audioPath));
-
-        // Play the audio
-        mediaPlayer->play();
+//        QString audioPath = QDir::currentPath() + "/Audio/CheckPatient.mp3";
+//        // Create a QMediaPlayer instance
+//        QMediaPlayer* mediaPlayer = new QMediaPlayer;
+//        // Set the media content
+//        mediaPlayer->setMedia(QUrl::fromLocalFile(audioPath));
+//        // Play the audio
+//        mediaPlayer->play();
 };
 void Scenario::callAmbulance(){
     aedSimulation.updateCurrentStepAndInstruction(2,aedSimulation.getUseCaseNumber(), "Call Ambulance");

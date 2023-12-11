@@ -185,7 +185,7 @@ void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const
 
 bool AEDSimulation::analyzeHB(int scenario){
 
-    this->arrhythmiaDetector.analyzeRhythm(scenario); //PASS A VALUE TO THIS
+    //this->arrhythmiaDetector.analyzeRhythm(scenario); //PASS A VALUE TO THIS
     // change display based on shockable or non-shockable
     updateCurrentStepAndInstruction(this->currentStep,this->useCaseNumber , "Analyzing HB ...");
     handleTimeIntervals([this](){

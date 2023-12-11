@@ -71,14 +71,14 @@ void MainWindow::updateInterface() {
     ui->onSignal->setStyleSheet(aedSimulation->isPoweredOn() ? "background-color: green;" : "background-color: grey;");
 
     std::stringstream feedbackStream;
-    feedbackStream << "Batter: " << aedSimulation->getBatteryLife()<<"%";
+    feedbackStream << "Battery: " << aedSimulation->getBatteryLife()<<"%";
      std::string batteryString = feedbackStream.str();
 
 
      QString batteryText = QString::fromStdString(batteryString);
      QString styleSheet;
 
-     if (aedSimulation->getBatteryLife() < 100 && aedSimulation->getBatteryLife() > 70) {
+     if (aedSimulation->getBatteryLife() <= 100 && aedSimulation->getBatteryLife() > 70) {
          styleSheet = "background-color: lightgreen; font-size: 10px;";
      } else if (aedSimulation->getBatteryLife() <= 70 && aedSimulation->getBatteryLife() >= 50) {
          styleSheet = "background-color: lightyellow; font-size: 10px;";

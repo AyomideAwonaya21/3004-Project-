@@ -30,8 +30,8 @@ public:
     QWidget *centralwidget;
     QTextBrowser *textBrowser;
     QTextBrowser *textBrowser_2;
-    QSpinBox *spinBox;
-    QPushButton *pushButton;
+    QSpinBox *useCaseNumber;
+    QPushButton *confirmBtn;
     QPlainTextEdit *plainTextEdit;
     QPlainTextEdit *plainTextEdit_2;
     QPlainTextEdit *plainTextEdit_3;
@@ -52,6 +52,13 @@ public:
     QPlainTextEdit *shockText;
     QPlainTextEdit *timeText;
     QTextEdit *instructionText;
+    QTextBrowser *checkPoint7;
+    QLabel *testIMG;
+    QTextBrowser *padsOn;
+    QPushButton *nextButton;
+    QPushButton *placePadsButton;
+    QPushButton *CPRButton;
+    QSpinBox *depthNumber;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -69,17 +76,17 @@ public:
         textBrowser_2->setObjectName(QString::fromUtf8("textBrowser_2"));
         textBrowser_2->setGeometry(QRect(0, 0, 256, 541));
         textBrowser_2->setStyleSheet(QString::fromUtf8("border-right: 1px solid black;"));
-        spinBox = new QSpinBox(centralwidget);
-        spinBox->setObjectName(QString::fromUtf8("spinBox"));
-        spinBox->setGeometry(QRect(30, 90, 45, 26));
-        spinBox->setMinimum(1);
-        spinBox->setMaximum(7);
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(120, 90, 83, 25));
+        useCaseNumber = new QSpinBox(centralwidget);
+        useCaseNumber->setObjectName(QString::fromUtf8("useCaseNumber"));
+        useCaseNumber->setGeometry(QRect(30, 90, 45, 26));
+        useCaseNumber->setMinimum(1);
+        useCaseNumber->setMaximum(6);
+        confirmBtn = new QPushButton(centralwidget);
+        confirmBtn->setObjectName(QString::fromUtf8("confirmBtn"));
+        confirmBtn->setGeometry(QRect(120, 90, 83, 25));
         plainTextEdit = new QPlainTextEdit(centralwidget);
         plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(30, 140, 131, 31));
+        plainTextEdit->setGeometry(QRect(30, 140, 211, 31));
         plainTextEdit->setStyleSheet(QString::fromUtf8("background-color: grey;\n"
 "color: black;\n"
 "font-weight: bold;\n"
@@ -100,28 +107,28 @@ public:
 "border: none;"));
         plainTextEdit_4 = new QPlainTextEdit(centralwidget);
         plainTextEdit_4->setObjectName(QString::fromUtf8("plainTextEdit_4"));
-        plainTextEdit_4->setGeometry(QRect(30, 290, 131, 31));
+        plainTextEdit_4->setGeometry(QRect(30, 290, 181, 31));
         plainTextEdit_4->setStyleSheet(QString::fromUtf8("background-color: grey;\n"
 "color: black;\n"
 "font-weight: bold;\n"
 "border: none;"));
         plainTextEdit_5 = new QPlainTextEdit(centralwidget);
         plainTextEdit_5->setObjectName(QString::fromUtf8("plainTextEdit_5"));
-        plainTextEdit_5->setGeometry(QRect(30, 340, 131, 31));
+        plainTextEdit_5->setGeometry(QRect(30, 340, 161, 31));
         plainTextEdit_5->setStyleSheet(QString::fromUtf8("background-color: grey;\n"
 "color: black;\n"
 "font-weight: bold;\n"
 "border: none;"));
         plainTextEdit_6 = new QPlainTextEdit(centralwidget);
         plainTextEdit_6->setObjectName(QString::fromUtf8("plainTextEdit_6"));
-        plainTextEdit_6->setGeometry(QRect(30, 390, 161, 31));
+        plainTextEdit_6->setGeometry(QRect(30, 390, 201, 31));
         plainTextEdit_6->setStyleSheet(QString::fromUtf8("background-color: grey;\n"
 "color: black;\n"
 "font-weight: bold;\n"
 "border: none;"));
         mainImage = new QLabel(centralwidget);
         mainImage->setObjectName(QString::fromUtf8("mainImage"));
-        mainImage->setGeometry(QRect(260, 10, 481, 501));
+        mainImage->setGeometry(QRect(260, 0, 481, 501));
         centerDisplay = new QTextBrowser(centralwidget);
         centerDisplay->setObjectName(QString::fromUtf8("centerDisplay"));
         centerDisplay->setGeometry(QRect(400, 180, 161, 81));
@@ -180,8 +187,36 @@ public:
         timeText->setStyleSheet(QString::fromUtf8("border: white;"));
         instructionText = new QTextEdit(centralwidget);
         instructionText->setObjectName(QString::fromUtf8("instructionText"));
-        instructionText->setGeometry(QRect(403, 200, 151, 51));
+        instructionText->setGeometry(QRect(400, 210, 161, 51));
         instructionText->setStyleSheet(QString::fromUtf8("border: white;"));
+        checkPoint7 = new QTextBrowser(centralwidget);
+        checkPoint7->setObjectName(QString::fromUtf8("checkPoint7"));
+        checkPoint7->setGeometry(QRect(320, 330, 16, 16));
+        checkPoint7->setStyleSheet(QString::fromUtf8("height: 20px;\n"
+"width:20px;\n"
+"border-radius: 50%;\n"
+"background-color: grey;"));
+        testIMG = new QLabel(centralwidget);
+        testIMG->setObjectName(QString::fromUtf8("testIMG"));
+        testIMG->setGeometry(QRect(400, 210, 161, 71));
+        padsOn = new QTextBrowser(centralwidget);
+        padsOn->setObjectName(QString::fromUtf8("padsOn"));
+        padsOn->setGeometry(QRect(630, 240, 16, 16));
+        padsOn->setStyleSheet(QString::fromUtf8("border-radius: 50%;\n"
+"background-color: grey;"));
+        nextButton = new QPushButton(centralwidget);
+        nextButton->setObjectName(QString::fromUtf8("nextButton"));
+        nextButton->setGeometry(QRect(300, 260, 51, 25));
+        placePadsButton = new QPushButton(centralwidget);
+        placePadsButton->setObjectName(QString::fromUtf8("placePadsButton"));
+        placePadsButton->setGeometry(QRect(600, 310, 83, 25));
+        CPRButton = new QPushButton(centralwidget);
+        CPRButton->setObjectName(QString::fromUtf8("CPRButton"));
+        CPRButton->setGeometry(QRect(342, 400, 41, 25));
+        depthNumber = new QSpinBox(centralwidget);
+        depthNumber->setObjectName(QString::fromUtf8("depthNumber"));
+        depthNumber->setGeometry(QRect(290, 400, 45, 26));
+        depthNumber->setMaximum(5);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -204,23 +239,27 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\" bgcolor=\"#808080\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "CONFIRM", nullptr));
-        plainTextEdit->setPlainText(QCoreApplication::translate("MainWindow", "1. Turn On AED", nullptr));
-        plainTextEdit_2->setPlainText(QCoreApplication::translate("MainWindow", "2. Place Electropads", nullptr));
-        plainTextEdit_3->setPlainText(QCoreApplication::translate("MainWindow", "3. Analyze Heart Rythm", nullptr));
-        plainTextEdit_4->setPlainText(QCoreApplication::translate("MainWindow", "4. Deliver Shock", nullptr));
-        plainTextEdit_5->setPlainText(QCoreApplication::translate("MainWindow", "5. Perform CPR", nullptr));
-        plainTextEdit_6->setPlainText(QCoreApplication::translate("MainWindow", "6. Monitor Patient", nullptr));
+        confirmBtn->setText(QCoreApplication::translate("MainWindow", "CONFIRM", nullptr));
+        plainTextEdit->setPlainText(QCoreApplication::translate("MainWindow", "1. Device Self Check Test", nullptr));
+        plainTextEdit_2->setPlainText(QCoreApplication::translate("MainWindow", "2. Regular HB (PEA)", nullptr));
+        plainTextEdit_3->setPlainText(QCoreApplication::translate("MainWindow", "3. Regular HB (Flatlined)", nullptr));
+        plainTextEdit_4->setPlainText(QCoreApplication::translate("MainWindow", "4. Irregular HB (VF)", nullptr));
+        plainTextEdit_5->setPlainText(QCoreApplication::translate("MainWindow", "5. Irregular HB (VT)", nullptr));
+        plainTextEdit_6->setPlainText(QCoreApplication::translate("MainWindow", "6. Pad Already on Patient", nullptr));
         mainImage->setText(QString());
         shockButton->setText(QCoreApplication::translate("MainWindow", "Apply Shock", nullptr));
         onButton->setText(QCoreApplication::translate("MainWindow", "Turn On", nullptr));
         shockText->setPlainText(QCoreApplication::translate("MainWindow", "SHOCKS 00", nullptr));
-        timeText->setPlainText(QCoreApplication::translate("MainWindow", "00:11", nullptr));
+        timeText->setPlainText(QString());
         instructionText->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Follow Instructions</p></body></html>", nullptr));
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
+        testIMG->setText(QString());
+        nextButton->setText(QCoreApplication::translate("MainWindow", "NEXT", nullptr));
+        placePadsButton->setText(QCoreApplication::translate("MainWindow", "Place Pads", nullptr));
+        CPRButton->setText(QCoreApplication::translate("MainWindow", "CPR", nullptr));
     } // retranslateUi
 
 };

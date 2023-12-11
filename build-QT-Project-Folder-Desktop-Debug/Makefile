@@ -58,7 +58,10 @@ SOURCES       = ../QT-Project-Folder/AEDInterface.cpp \
 		../QT-Project-Folder/CPRFeedback.cpp \
 		../QT-Project-Folder/Scenario.cpp \
 		../QT-Project-Folder/main.cpp \
-		../QT-Project-Folder/mainwindow.cpp moc_mainwindow.cpp
+		../QT-Project-Folder/mainwindow.cpp moc_AEDSimulation.cpp \
+		moc_CPRFeedback.cpp \
+		moc_Scenario.cpp \
+		moc_mainwindow.cpp
 OBJECTS       = AEDInterface.o \
 		AEDSimulation.o \
 		ArrhythmiaDetector.o \
@@ -66,6 +69,9 @@ OBJECTS       = AEDInterface.o \
 		Scenario.o \
 		main.o \
 		mainwindow.o \
+		moc_AEDSimulation.o \
+		moc_CPRFeedback.o \
+		moc_Scenario.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -376,14 +382,37 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_AEDSimulation.cpp moc_CPRFeedback.cpp moc_Scenario.cpp moc_mainwindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_AEDSimulation.cpp moc_CPRFeedback.cpp moc_Scenario.cpp moc_mainwindow.cpp
+moc_AEDSimulation.cpp: ../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		ui_mainwindow.h \
+		../QT-Project-Folder/Scenario.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/student/Desktop/Final Project/3004-Project-/build-QT-Project-Folder-Desktop-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-Project-Folder/AEDSimulation.h -o moc_AEDSimulation.cpp
+
+moc_CPRFeedback.cpp: ../QT-Project-Folder/CPRFeedback.h \
+		ui_mainwindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/student/Desktop/Final Project/3004-Project-/build-QT-Project-Folder-Desktop-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-Project-Folder/CPRFeedback.h -o moc_CPRFeedback.cpp
+
+moc_Scenario.cpp: ../QT-Project-Folder/Scenario.h \
+		ui_mainwindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/student/Desktop/Final Project/3004-Project-/build-QT-Project-Folder-Desktop-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/student/Desktop/Final Project/3004-Project-/QT-Project-Folder' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QT-Project-Folder/Scenario.h -o moc_Scenario.cpp
+
 moc_mainwindow.cpp: ../QT-Project-Folder/mainwindow.h \
 		../QT-Project-Folder/AEDSimulation.h \
 		../QT-Project-Folder/AEDInterface.h \
 		../QT-Project-Folder/ArrhythmiaDetector.h \
 		../QT-Project-Folder/CPRFeedback.h \
+		ui_mainwindow.h \
 		../QT-Project-Folder/Scenario.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -417,16 +446,28 @@ AEDSimulation.o: ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/AED
 		../QT-Project-Folder/AEDInterface.h \
 		../QT-Project-Folder/ArrhythmiaDetector.h \
 		../QT-Project-Folder/CPRFeedback.h \
-		../QT-Project-Folder/Scenario.h
+		ui_mainwindow.h \
+		../QT-Project-Folder/Scenario.h \
+		../QT-Project-Folder/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AEDSimulation.o ../QT-Project-Folder/AEDSimulation.cpp
 
 ArrhythmiaDetector.o: ../QT-Project-Folder/ArrhythmiaDetector.cpp ../QT-Project-Folder/ArrhythmiaDetector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ArrhythmiaDetector.o ../QT-Project-Folder/ArrhythmiaDetector.cpp
 
-CPRFeedback.o: ../QT-Project-Folder/CPRFeedback.cpp ../QT-Project-Folder/CPRFeedback.h
+CPRFeedback.o: ../QT-Project-Folder/CPRFeedback.cpp ../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		ui_mainwindow.h \
+		../QT-Project-Folder/Scenario.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CPRFeedback.o ../QT-Project-Folder/CPRFeedback.cpp
 
-Scenario.o: ../QT-Project-Folder/Scenario.cpp ../QT-Project-Folder/Scenario.h
+Scenario.o: ../QT-Project-Folder/Scenario.cpp ../QT-Project-Folder/AEDSimulation.h \
+		../QT-Project-Folder/AEDInterface.h \
+		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/CPRFeedback.h \
+		ui_mainwindow.h \
+		../QT-Project-Folder/Scenario.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scenario.o ../QT-Project-Folder/Scenario.cpp
 
 main.o: ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.h \
@@ -434,6 +475,7 @@ main.o: ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.h \
 		../QT-Project-Folder/AEDInterface.h \
 		../QT-Project-Folder/ArrhythmiaDetector.h \
 		../QT-Project-Folder/CPRFeedback.h \
+		ui_mainwindow.h \
 		../QT-Project-Folder/Scenario.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../QT-Project-Folder/main.cpp
 
@@ -442,9 +484,18 @@ mainwindow.o: ../QT-Project-Folder/mainwindow.cpp ../QT-Project-Folder/mainwindo
 		../QT-Project-Folder/AEDInterface.h \
 		../QT-Project-Folder/ArrhythmiaDetector.h \
 		../QT-Project-Folder/CPRFeedback.h \
-		../QT-Project-Folder/Scenario.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../QT-Project-Folder/Scenario.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../QT-Project-Folder/mainwindow.cpp
+
+moc_AEDSimulation.o: moc_AEDSimulation.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_AEDSimulation.o moc_AEDSimulation.cpp
+
+moc_CPRFeedback.o: moc_CPRFeedback.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_CPRFeedback.o moc_CPRFeedback.cpp
+
+moc_Scenario.o: moc_Scenario.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Scenario.o moc_Scenario.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

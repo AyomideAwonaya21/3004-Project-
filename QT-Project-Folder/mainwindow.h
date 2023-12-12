@@ -19,18 +19,13 @@ public:
     void startThreadToUpdateTime(QPlainTextEdit *timeTextEdit);
     void updateCheckpoints(int step);
 
-
 private slots:
-   // void on_shockButton_clicked();
     void onButtonClicked(int useCaseNumber);
 
 private:
     Ui::MainWindow *ui;
     AEDSimulation *aedSimulation;  // AEDSimulation as a pointer
-
     void updateInterface();
     void updateStatusDisplay();
-    void startSimulation(int useCaseNumber);
 };
-
 #endif // MAINWINDOW_H

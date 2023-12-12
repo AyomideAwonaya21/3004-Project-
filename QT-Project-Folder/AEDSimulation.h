@@ -20,26 +20,26 @@ public:
     //explicit AEDSimulation(QObject *parent = nullptr);
     AEDSimulation(Ui::MainWindow* ui);
     ~AEDSimulation();
-
-    void startSimulation(int useCaseNumber);
-    void stopSimulation();
-    void simulateECGData();
-    void updateSimulation();
-    void CPRFinished();
-
-    void deliverShock(int numOfShocksNeeded);
-    void powerOn(int useCaseNumber);
+    // string returns
     std::string getCurrentInstruction() const;
     std::string getCurrentTime() const;
+    // int returns
     int getShockCount() const;
-    bool isPoweredOn() const;
     int getCurrentStep() const;
-    void updateCurrentStepAndInstruction(int step, int scenario, const std::string&instruction);
-    bool analyzeHB(int scenario); // calls the arrhythmiaDetector to analyze HB
     int getUseCaseNumber();
+    int getBatteryLife();
+    // boolean returns
+    bool isPoweredOn() const;
+    bool analyzeHB(int scenario);
+    //void funtions
+    void stopSimulation();
+    void updateSimulation();
+    void CPRFinished();
+    void deliverShock(int numOfShocksNeeded);
+    void powerOn(int useCaseNumber);
+    void updateCurrentStepAndInstruction(int step, int scenario, const std::string&instruction);
     void performCPR();
     void setBatteryLife(int value);
-    int getBatteryLife();
     void depleteBattery(int value);
     void setCurrentUseCaseNumber(int value);
 
@@ -48,31 +48,31 @@ signals:
     void currentTimeUpdated();
 
 private:
-    int useCaseNumber;
-    AEDInterface interface;
-    ArrhythmiaDetector arrhythmiaDetector;
+    //functions
+    void updateCurrentTime();
+    void displayIMG(QString path);
+    void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
+    std::string formatTime(long seconds) const;
+
+    //variables
     CPRFeedback cprFeedback;
     Ui::MainWindow* mainUi;
     Scenario currentScenario;
-    bool simulationRunning;
-    std::vector<double> ecgData;
     MainWindow *mainwindow;
-    void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
-    bool padsPlaced;
-    void displayIMG(QString path);
-    int batteryLife;
     Battery battery;
-
-
-    int shockCount = 0;
-    bool powerState;
-    int currentStep;
-    std::string currentInstruction;
-    std::string currentTime;
-    std::string formatTime(long seconds) const;
     QTimer *timer;
 
-    void updateCurrentTime();
+    int useCaseNumber;
+    int batteryLife;
+    int shockCount = 0;
+    int currentStep;
+
+    bool simulationRunning;
+    bool padsPlaced;
+    bool powerState;
+
+    std::string currentInstruction;
+    std::string currentTime;
 };
 
 #endif // AEDSIMULATION_H

@@ -28,20 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect the AEDSimulation signals to MainWindow slots
     connect(aedSimulation, &AEDSimulation::updateInterfaceSignal, this, &MainWindow::updateInterface);
-
-    // Start the AED simulation
-//    //connect(ui->onButton,&QPushButton::clicked, this, &MainWindow::startSimulation);
-//    connect(ui->onButton,&QPushButton::clicked, [=](){
-//        startSimulation(useCaseNumber);
-//    });
-
-
     // Set the initial size of the MainWindow
     resize(800, 600);
-}
-
-void MainWindow::startSimulation(int useCaseNumber){
-     //aedSimulation->startSimulation(useCaseNumber);
 }
 
 MainWindow::~MainWindow() {
@@ -50,19 +38,12 @@ MainWindow::~MainWindow() {
     delete aedSimulation; // Delete the aedSimulation object
     delete ui;
 }
-
-//void MainWindow::on_shockButton_clicked() {
-//    // Handle logic when the shock button is clicked
-//    aedSimulation->deliverShock();
-//    updateInterface();
-//}
-
 void MainWindow::onButtonClicked(int useCaseNumber) {
     // Handle logic when the on button is clicked
     aedSimulation->powerOn(useCaseNumber);
     updateInterface();
 }
-
+/*Updates the buttons on the interface and the text displayed in the middle*/
 void MainWindow::updateInterface() {
     // Update the user interface elements based on the state of the AED simulation
     ui->instructionText->setPlainText(QString::fromStdString(aedSimulation->getCurrentInstruction()));
@@ -92,7 +73,7 @@ void MainWindow::updateInterface() {
     // Update the checkpoint indicators based on the current step of the simulation
     updateCheckpoints(aedSimulation->getCurrentStep());
 }
-
+/*Updates the button step colors*/
 void MainWindow::updateCheckpoints(int step) {
     //qDebug() << step;
     // Update the color of each checkpoint based on the current step of the simulation

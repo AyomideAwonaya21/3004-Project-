@@ -8,8 +8,6 @@
 #include <QDir>
 
 AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this,ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0), battery(100) {
-    //currentScenario.loadScenario(ScenarioType::BasicLifeSupport);
-
     // Initialize QTimer
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &AEDSimulation::updateSimulation);
@@ -22,69 +20,28 @@ AEDSimulation::~AEDSimulation() {
 void AEDSimulation::setCurrentUseCaseNumber(int value){
     this->useCaseNumber = value;
 };
-void AEDSimulation::startSimulation(int useCaseNumber) {
-    simulationRunning = true;
-    powerState = true;
-    currentTime = "00:00";
-    timer->start();  // Start the timer
-    std::cout << "AED Simulation started." << std::endl;
-}
-
 void AEDSimulation::stopSimulation() {
     simulationRunning = false;
     timer->stop();  // Stop the timer
     std::cout << "AED Simulation stopped." << std::endl;
 }
-
-void AEDSimulation::simulateECGData() {
-    ecgData.clear();
-    for (int i = 0; i < 100; ++i) {
-        double waveform = (i % 20 == 0) ? 0.0 : 1.0;  // Simplified waveform pattern
-        ecgData.push_back(waveform);
-    }
-    interface.displayECG(ecgData);
-}
-
 void AEDSimulation::updateSimulation() {
     if (!simulationRunning) {
         return;
     }
-
-    //bool shockableRhythm = arrhythmiaDetector.analyzeRhythm(ecgData);
-    //interface.displayShockInstructions(shockableRhythm);
-
-    // Simulate user action for CPR
-    //cprFeedback.evaluateCompressions(100, 5); // Example CPR rate and depth
-    //interface.updateCPRFeedback(cprFeedback.getFeedback());
-
-    // Update the scenario based on the simulation state
-    currentScenario.executeScenario();
     updateCurrentTime();
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
-
 void AEDSimulation::deliverShock(int numOfShocksNeeded) {
-    std::cout<<"The shock count at the begining is: ";
-    std::cout<<shockCount<<std::endl;
     shockCount += 1;
-    std::cout<<"The shock needed: ";
-    std::cout<<numOfShocksNeeded;
-    std::cout<<" Current shock given: ";
-    std::cout<<shockCount<<std::endl;
     currentInstruction = "Shock Delivered";
-    //currentStep++;
     QString shockString = "Shock " + QString::number(shockCount);
     mainUi->shockText->setPlainText(shockString);
-
     currentScenario.conductHeartBeatAnalysis();
-
-    //If the number of shocks needed is greater than shock count decrement step
-    // so that it can go back to analysing HB
-    //if(shockCount < numOfShocksNeeded){currentScenario.conductHeartBeatAnalysis();}
-    //else if(shockCount == numOfShocksNeeded || shockCount > numOfShocksNeeded){currentStep++;};
+    // Update the Interface
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
-
+/*Start of the AED operation*/
 void AEDSimulation::powerOn(int useCaseNumber) {
     batteryLife = useCaseNumber == 7? 5:100;
     simulationRunning = true;
@@ -107,27 +64,22 @@ void AEDSimulation::powerOn(int useCaseNumber) {
 int AEDSimulation::getUseCaseNumber(){
     return this->useCaseNumber;
 };
-
 std::string AEDSimulation::getCurrentInstruction() const {
     return currentInstruction;
 }
-
 std::string AEDSimulation::getCurrentTime() const {
     return currentTime;
 }
-
+/*Returns the number of shocks given to the patient*/
 int AEDSimulation::getShockCount() const {
     return shockCount;
 }
-
 bool AEDSimulation::isPoweredOn() const {
     return powerState;
 }
-
 int AEDSimulation::getCurrentStep() const {
     return currentStep;
 }
-
 void AEDSimulation::updateCurrentTime() {
     static auto startTime = std::chrono::system_clock::now();
     auto now = std::chrono::system_clock::now();
@@ -135,7 +87,6 @@ void AEDSimulation::updateCurrentTime() {
     currentTime = formatTime(elapsed.count());
     emit currentTimeUpdated();  // Emit signal when time is updated
 }
-
 std::string AEDSimulation::formatTime(long seconds) const {
     long mins = seconds / 60;
     long secs = seconds % 60;
@@ -143,6 +94,7 @@ std::string AEDSimulation::formatTime(long seconds) const {
     ss << std::setfill('0') << std::setw(2) << mins << ":" << std::setw(2) << secs;
     return ss.str();
 }
+/*Display an image on the main display*/
 void AEDSimulation::displayIMG(QString path){
     QImage image(path);
     if(!image.isNull()){
@@ -152,12 +104,12 @@ void AEDSimulation::displayIMG(QString path){
          mainUi->testIMG->setPixmap(scaledPix);
     }
 }
+/*Update the buttons and the GUI text instuction*/
 void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const std::string& instruction) {
     mainUi->instructionText->setFontPointSize(10);
     if(step == 0){//this is for the self check test message because it is long
         mainUi->instructionText->setFontPointSize(7);
     }
-
     currentStep = step == 0?currentStep:step;
     currentInstruction = instruction;
     //remove the image when not appropriate
@@ -185,10 +137,8 @@ void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const
     }
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
-
+/*Analyzes the HB depending on which use case is being run*/
 bool AEDSimulation::analyzeHB(int scenario){
-
-    //this->arrhythmiaDetector.analyzeRhythm(scenario); //PASS A VALUE TO THIS
     // change display based on shockable or non-shockable
     updateCurrentStepAndInstruction(this->currentStep,this->useCaseNumber , "Analyzing HB ...");
     handleTimeIntervals([this](){
@@ -207,23 +157,22 @@ bool AEDSimulation::analyzeHB(int scenario){
     //change battery life
     this->depleteBattery(10);
 };
+/*This is like a setTimeOut function, it delays the call to a function*/
 void AEDSimulation::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
     QTimer* timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, [=]() {
         action();
-
         // Stop the timer after executing the action
         timer->stop();
     });
-
     // Start the timer with the specified interval
     timer->start(timeInSeconds * 1000);  // Convert seconds to milliseconds
 };
 void AEDSimulation::performCPR(){
     cprFeedback.performCPR();
 };
+/*After the CPR is finished, it should move to mouth to mouth*/
 void AEDSimulation::CPRFinished(){
-    std::cout<<"CPR IS DONE BRO-----"<<std::endl;
     currentScenario.performMouthToMouth();
 }
 void AEDSimulation::setBatteryLife(int value){
@@ -232,7 +181,7 @@ void AEDSimulation::setBatteryLife(int value){
 int AEDSimulation::getBatteryLife(){
     return this->battery.getBatteryLife();
 }
+/*This function call the battery object to decrease the battery level*/
 void AEDSimulation::depleteBattery(int value){
     this->battery.decreaseBatteryLife(value);
-    //emit updateInterfaceSignal();
 }

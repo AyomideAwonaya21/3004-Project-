@@ -1,3 +1,7 @@
+/*
+This calss deals with the different use case scenarios. It uses the aedSimulation to update the
+global use case number, update the GUI and send CPR and HB requests.
+*/
 #include "AEDSimulation.h"
 #include "Scenario.h"
 #include <QDebug>
@@ -7,7 +11,6 @@
 #include <random>
 #include <iostream>
 #include <QDir>
-//#include <QMediaPlayer>
 
 Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui) {
     connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
@@ -17,38 +20,25 @@ Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimula
     shocksNeeded = distribution(gen);
 }
 
-Scenario::~Scenario() {
-
-}
-
+Scenario::~Scenario() {}
+/*This function loads the current use case scenario*/
 void Scenario::loadScenario(ScenarioType type) {
     currentType = type;
     initializeScenario(type);
     std::cout << "Loaded Scenario: " << description << std::endl;
 }
-
-void Scenario::executeScenario() {
-//    if (currentType == ScenarioType::Unknown) {
-//        std::cout << "No scenario loaded." << std::endl;
-//        return;
-//    }
-    //std::cout << "Executing Scenario: " << description << std::endl;
-    processExecution();
-}
-
+/*this is like a setTimeout function, creates an interval before running another function*/
 void Scenario::handleTimeIntervals(std::function<void()> action, int timeInSeconds) {
     QTimer* timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, [=]() {
         action();
-
         // Stop the timer after executing the action
         timer->stop();
     });
-
     // Start the timer with the specified interval
     timer->start(timeInSeconds * 1000);  // Convert seconds to milliseconds
 }
-
+/*This function is in charge of loading the necessary variables for the use case selected*/
 void Scenario::initializeScenario(ScenarioType type) {
     currentFunctionIndex = 0;
     mainUi.padsOn->setStyleSheet("background-color: red;");
@@ -120,38 +110,25 @@ void Scenario::initializeScenario(ScenarioType type) {
             break;
     }
 }
-
-void Scenario::processExecution() {
-    for (const auto& action : actions) {
-        //std::cout << "Performing action: " << action << std::endl;
-        // Add detailed logic for each action
-    }
-}
+/*This function is in charge of indicating to the user the current step*/
 void Scenario::checkPatient(){
     // set the AEDSimulation text and step, that function will then update GUI
     aedSimulation.updateCurrentStepAndInstruction(1,aedSimulation.getUseCaseNumber(), "Check Patient Responsiveness");
-    //play audio here
-//    QString imagePath = QDir::currentPath() + "/Auuuuudioable1.png";
-
-    // Play audio here
-//        QString audioPath = QDir::currentPath() + "/Audio/CheckPatient.mp3";
-//        // Create a QMediaPlayer instance
-//        QMediaPlayer* mediaPlayer = new QMediaPlayer;
-//        // Set the media content
-//        mediaPlayer->setMedia(QUrl::fromLocalFile(audioPath));
-//        // Play the audio
-//        mediaPlayer->play();
 };
+/*This function is in charge of indicating to the user the current step*/
 void Scenario::callAmbulance(){
     aedSimulation.updateCurrentStepAndInstruction(2,aedSimulation.getUseCaseNumber(), "Call Ambulance");
     //change battery life
     aedSimulation.depleteBattery(5);
 };
+/*This function is in charge of indicating to the user the current step*/
 void Scenario::placePadsOnPatient(){
     aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Place Pads");
     //change battery life
     aedSimulation.depleteBattery(5);
 };
+/*This function is in charge of indicating to the user the current step,
+and sending the aed an instruction to analyze the HB depending on the use case*/
 void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
@@ -162,70 +139,60 @@ void Scenario::conductHeartBeatAnalysis(){
      else  if(aedSimulation.getUseCaseNumber() == 6){aedSimulation.analyzeHB(6);}
 
 };
+/*This function allows the user to shock the patient, it activates the shock button as well*/
 void Scenario::allowShock(){
     aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
     // Disconnect the existing connection (if any)
-        QObject::disconnect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
-
+    QObject::disconnect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
     // Connect the clicked signal of shockButton to onShockButtonClicked slot
     QObject::connect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
 
-}; //this is to give patient shock after HB analysis
+};
+/*This function intructs and allows the user to perform CPR on the patient*/
 void Scenario::performCPR(){
     aedSimulation.updateCurrentStepAndInstruction(6,aedSimulation.getUseCaseNumber(), "Perform CPR");
     aedSimulation.performCPR();
-//    //change battery life
-//    aedSimulation.depleteBattery(10);
 };
+/*This function instructs the user to perform mouth to mouth on the patient*/
 void Scenario::performMouthToMouth(){
     aedSimulation.updateCurrentStepAndInstruction(7,aedSimulation.getUseCaseNumber(), "Perform Mouth To Mouth");
     //change battery life
     aedSimulation.depleteBattery(5);
 }
-
+/*This is the function that shocks the patient. Invoked when there is an irregular HB*/
 void Scenario::onShockButtonClicked(){
     aedSimulation.deliverShock(shocksNeeded);
-
     //change battery life
     aedSimulation.depleteBattery(10);
 };
+/*This function is connect to the next button, which is meant to move to the next step in the
+operation*/
 void Scenario::onNextButtonClicked() {
     if(currentFunctionIndex == 2&& this->padsPlaced == false){
-        std::cout<<"PADS ARE NOT PLACE"<<std::endl;
         return;
     }
     // Check if the currentFunctionIndex is within the bounds of the actions vector
     if (currentFunctionIndex < actions.size()) {
         // Execute the function at the current index
         actions[currentFunctionIndex]();
-
-        // Increment the index for the next function
-        //check to see if pads are placed before moving to next step
-        std::cout<<"The function index is: ";
-        std::cout<<currentFunctionIndex;
-        std::cout<<" and the pads are: ";
-        std::cout<<this->padsPlaced<<std::endl;
-//        if(currentFunctionIndex == 1&& this->padsPlaced == false){
-//            std::cout<<"PADS ARE NOT PLACE"<<std::endl;
-//            return;
-//        }
-//        else{currentFunctionIndex++;};
         currentFunctionIndex++;
-
     }
 };
+/*This button is for the pads, places pads on patient when called*/
 void Scenario::onPadsPlaceButtonClicked() {
     // Change the color of mainUi->padsOn to green
     mainUi.padsOn->setStyleSheet("background-color: green;");
     this->padsPlaced = true;
 }
+/*This is to instruct the patient to wait for an ambulance and monitor the patient*/
 void Scenario:: waitForAmbulance(){
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Monitor Patient While Ambulance Comes");
-
 }
 int Scenario::getShocksNeeded(){
     return this->shocksNeeded;
 }
+
+/*These last two functions are for use case 1 and 7, where plain text is put on the screen*/
 void Scenario::selfCheck(){
     aedSimulation.updateCurrentStepAndInstruction(0,aedSimulation.getUseCaseNumber(), "Self check complete, battery is full, pads are available. Ready to operate!");
 }

@@ -12,28 +12,26 @@ class CPRFeedback: public QObject {
 public:
     CPRFeedback(AEDSimulation& aedSimulation,Ui::MainWindow* ui);
     ~CPRFeedback();
-    void evaluateCompressions(int rate, int depth);
-    std::string getFeedback();
     void performCPR();
 
-
 private:
-    double idealRate;
-    int idealDepth;
-    std::string currentFeedback;
     std::string updateFeedback(double rate, int depth);
-    Ui::MainWindow* mainUi;
     void onCPRButtonClicked();
+    void onDepthNumberValueChanged(int value);
+    void connectCPRButton();
+    void disconnectCPRButton();
+
+    std::string currentFeedback;
+    Ui::MainWindow* mainUi;
     QDateTime lastClickTime;
     AEDSimulation& aedSimulation;
-    int goodCompressionCount = 0;
     std::string compressionStatus ="bad";
-    int compressionDepth;
-    void onDepthNumberValueChanged(int value);
-
-    void connectCPRButton();
-        void disconnectCPRButton();
     QMetaObject::Connection cprButtonConnection;
+
+    double idealRate;
+    int idealDepth;
+    int goodCompressionCount = 0;
+    int compressionDepth;
 };
 
 #endif // CPRFEEDBACK_H

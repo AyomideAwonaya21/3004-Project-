@@ -24,48 +24,40 @@ class Scenario: public QObject {
 public:
     Scenario(AEDSimulation& aedSimulation,Ui::MainWindow& ui);
     ~Scenario();
-
     void loadScenario(ScenarioType type);
-    void executeScenario();
     void performMouthToMouth();
     void allowShock();
     void conductHeartBeatAnalysis();
     int getShocksNeeded();
-    //void setWindow(Mainwindow *window);
+
 public slots:
     void onNextButtonClicked();
 
 private:
-    ScenarioType currentType;
-    std::string description;
     void initializeScenario(ScenarioType type);
-    void processExecution();
-    AEDSimulation& aedSimulation;
-    Ui::MainWindow& mainUi;
-    bool shockButtonPressed = false;
     void onShockButtonClicked();
     void handleTimeIntervals(std::function<void()> action, int timeInSeconds);
-    int currentFunctionIndex;
     void donNextButtonClicked();
-    std::vector<std::function<void()>> actions;
     void onPadsPlaceButtonClicked();
-    bool padsPlaced = false;
-    int shocksNeeded;
     void batteryLow();
 
-    // These are the steps the machine takes
+    //Functions for steps/instructions
     void checkPatient();
     void callAmbulance();
     void placePadsOnPatient();
-//    void conductHeartBeatAnalysis();
-    //void allowShock(); //this is to give patient shock after HB analysis
     void performCPR();
     void waitForAmbulance();
-//    void performMouthToMouth();
     void selfCheck();
 
-    // this should be set to the parent windown so the button can be turned green
-//    MainWindow *mainWindow;
-};
+    ScenarioType currentType;
+    std::string description;
+    AEDSimulation& aedSimulation;
+    Ui::MainWindow& mainUi;
+    std::vector<std::function<void()>> actions;
 
+    bool shockButtonPressed = false;
+    bool padsPlaced = false;
+    int currentFunctionIndex;
+    int shocksNeeded;  
+};
 #endif // SCENARIO_H

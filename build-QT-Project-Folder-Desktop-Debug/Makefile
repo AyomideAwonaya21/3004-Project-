@@ -52,9 +52,7 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../QT-Project-Folder/AEDInterface.cpp \
-		../QT-Project-Folder/AEDSimulation.cpp \
-		../QT-Project-Folder/ArrhythmiaDetector.cpp \
+SOURCES       = ../QT-Project-Folder/AEDSimulation.cpp \
 		../QT-Project-Folder/Battery.cpp \
 		../QT-Project-Folder/CPRFeedback.cpp \
 		../QT-Project-Folder/Scenario.cpp \
@@ -63,9 +61,7 @@ SOURCES       = ../QT-Project-Folder/AEDInterface.cpp \
 		moc_CPRFeedback.cpp \
 		moc_Scenario.cpp \
 		moc_mainwindow.cpp
-OBJECTS       = AEDInterface.o \
-		AEDSimulation.o \
-		ArrhythmiaDetector.o \
+OBJECTS       = AEDSimulation.o \
 		Battery.o \
 		CPRFeedback.o \
 		Scenario.o \
@@ -153,15 +149,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../QT-Project-Folder/QT-Project-Folder.pro ../QT-Project-Folder/AEDInterface.h \
-		../QT-Project-Folder/AEDSimulation.h \
-		../QT-Project-Folder/ArrhythmiaDetector.h \
+		../QT-Project-Folder/QT-Project-Folder.pro ../QT-Project-Folder/AEDSimulation.h \
 		../QT-Project-Folder/Battery.h \
 		../QT-Project-Folder/CPRFeedback.h \
 		../QT-Project-Folder/Scenario.h \
-		../QT-Project-Folder/mainwindow.h ../QT-Project-Folder/AEDInterface.cpp \
-		../QT-Project-Folder/AEDSimulation.cpp \
-		../QT-Project-Folder/ArrhythmiaDetector.cpp \
+		../QT-Project-Folder/mainwindow.h ../QT-Project-Folder/AEDSimulation.cpp \
 		../QT-Project-Folder/Battery.cpp \
 		../QT-Project-Folder/CPRFeedback.cpp \
 		../QT-Project-Folder/Scenario.cpp \
@@ -352,8 +344,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QT-Project-Folder/AEDInterface.h ../QT-Project-Folder/AEDSimulation.h ../QT-Project-Folder/ArrhythmiaDetector.h ../QT-Project-Folder/Battery.h ../QT-Project-Folder/CPRFeedback.h ../QT-Project-Folder/Scenario.h ../QT-Project-Folder/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QT-Project-Folder/AEDInterface.cpp ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/ArrhythmiaDetector.cpp ../QT-Project-Folder/Battery.cpp ../QT-Project-Folder/CPRFeedback.cpp ../QT-Project-Folder/Scenario.cpp ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QT-Project-Folder/AEDSimulation.h ../QT-Project-Folder/Battery.h ../QT-Project-Folder/CPRFeedback.h ../QT-Project-Folder/Scenario.h ../QT-Project-Folder/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/Battery.cpp ../QT-Project-Folder/CPRFeedback.cpp ../QT-Project-Folder/Scenario.cpp ../QT-Project-Folder/main.cpp ../QT-Project-Folder/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../QT-Project-Folder/mainwindow.ui $(DISTDIR)/
 
 
@@ -445,9 +437,6 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-AEDInterface.o: ../QT-Project-Folder/AEDInterface.cpp ../QT-Project-Folder/AEDInterface.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AEDInterface.o ../QT-Project-Folder/AEDInterface.cpp
-
 AEDSimulation.o: ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/AEDSimulation.h \
 		../QT-Project-Folder/AEDInterface.h \
 		../QT-Project-Folder/ArrhythmiaDetector.h \
@@ -457,9 +446,6 @@ AEDSimulation.o: ../QT-Project-Folder/AEDSimulation.cpp ../QT-Project-Folder/AED
 		../QT-Project-Folder/Battery.h \
 		../QT-Project-Folder/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AEDSimulation.o ../QT-Project-Folder/AEDSimulation.cpp
-
-ArrhythmiaDetector.o: ../QT-Project-Folder/ArrhythmiaDetector.cpp ../QT-Project-Folder/ArrhythmiaDetector.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ArrhythmiaDetector.o ../QT-Project-Folder/ArrhythmiaDetector.cpp
 
 Battery.o: ../QT-Project-Folder/Battery.cpp ../QT-Project-Folder/Battery.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Battery.o ../QT-Project-Folder/Battery.cpp

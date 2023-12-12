@@ -94,17 +94,30 @@ void Scenario::initializeScenario(ScenarioType type) {
             };
             break;
         case ScenarioType::PadsAlreadyOn:
-        aedSimulation.setCurrentUseCaseNumber(2);
-        onPadsPlaceButtonClicked();
-        conductHeartBeatAnalysis();
-        actions = {
-           [this]() { performCPR();},
-            [this]() { waitForAmbulance();},
+            aedSimulation.setCurrentUseCaseNumber(2);
+            onPadsPlaceButtonClicked();
+            conductHeartBeatAnalysis();
+            actions = {
+                [this]() { performCPR();},
+                [this]() { waitForAmbulance();},
             };
             break;
        case ScenarioType::BatterLifeLow:
                 batteryLow();
              break;
+      case ScenarioType::LossOfConnection:
+        this->connectionFixed = false;
+        checkPatient();
+        actions = {
+           [this]() { callAmbulance(); },
+           [this]() { placePadsOnPatient(); },
+           [this]() { conductHeartBeatAnalysis(); },
+            [this]() { placePadsOnPatient();},
+            [this]() { conductHeartBeatAnalysis(); },
+            [this]() { performCPR();},
+             [this]() { waitForAmbulance();},
+            };
+            break;
         default:
             description = "Unknown Scenario";
             actions.clear();
@@ -124,7 +137,12 @@ void Scenario::callAmbulance(){
 };
 /*This function is in charge of indicating to the user the current step*/
 void Scenario::placePadsOnPatient(){
-    aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Place Pads");
+    if(aedSimulation.getUseCaseNumber() && connectionFixed == true){
+        aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Connect Lost, please place pads");
+    }
+    else{
+        aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Place Pads");
+    }
     //change battery life
     aedSimulation.depleteBattery(5);
 };
@@ -133,8 +151,16 @@ and sending the aed an instruction to analyze the HB depending on the use case*/
 void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
-    if(aedSimulation.getUseCaseNumber() >=2 && aedSimulation.getUseCaseNumber() <=6){
+    if((aedSimulation.getUseCaseNumber() >=2 && aedSimulation.getUseCaseNumber() <=6) || aedSimulation.getUseCaseNumber() ==8){
         deactivateNextButton();
+        //if there is loss of connectionn
+        if(aedSimulation.getUseCaseNumber() == 8 && this->connectionFixed == false){
+            std::cout<<"In the scenario"<<std::endl;
+            mainUi.padsOn->setStyleSheet("background-color: red;");
+            //aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Connection Lost, please Place pads");
+            this->padsPlaced = false;
+            this->connectionFixed = true;
+        }
         aedSimulation.analyzeHB();
         handleTimeIntervals([this]() { activateNextButton(); }, 2);
     }
@@ -177,7 +203,7 @@ void Scenario::resetFunctionIndex(){
 /*This function is connect to the next button, which is meant to move to the next step in the
 operation*/
 void Scenario::onNextButtonClicked() {
-    if(currentFunctionIndex == 2&& this->padsPlaced == false){
+    if((currentFunctionIndex == 2 || currentFunctionIndex == 4)&& this->padsPlaced == false){
         return;
     }
     // Check if the currentFunctionIndex is within the bounds of the actions vector

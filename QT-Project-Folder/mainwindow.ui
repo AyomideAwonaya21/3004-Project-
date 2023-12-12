@@ -57,7 +57,7 @@ p, li { white-space: pre-wrap; }
      <number>1</number>
     </property>
     <property name="maximum">
-     <number>7</number>
+     <number>8</number>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="plainTextEdit">
@@ -509,6 +509,25 @@ border: none;</string>
     </property>
     <property name="plainText">
      <string>7. Low Battery Life</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="plainTextEdit_8">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>490</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: grey;
+color: black;
+font-weight: bold;
+border: none;</string>
+    </property>
+    <property name="plainText">
+     <string>8. Loss of Connection</string>
     </property>
    </widget>
   </widget>

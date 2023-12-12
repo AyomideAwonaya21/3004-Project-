@@ -16,7 +16,8 @@ enum class ScenarioType {
     IrregularHBVF,
     IrregularHBVT,
     PadsAlreadyOn,
-    BatterLifeLow
+    BatterLifeLow,
+    LossOfConnection
 };
 
 class Scenario: public QObject {
@@ -63,6 +64,7 @@ private:
     bool shockButtonPressed = false;
     bool padsPlaced = false;
     int currentFunctionIndex;
+    bool connectionFixed = false;
     int shocksNeeded;  
 };
 #endif // SCENARIO_H

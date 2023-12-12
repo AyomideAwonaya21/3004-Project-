@@ -60,6 +60,7 @@ public:
     QSpinBox *depthNumber;
     QPlainTextEdit *batteryText;
     QPlainTextEdit *plainTextEdit_7;
+    QPlainTextEdit *plainTextEdit_8;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -81,7 +82,7 @@ public:
         useCaseNumber->setObjectName(QString::fromUtf8("useCaseNumber"));
         useCaseNumber->setGeometry(QRect(90, 100, 45, 26));
         useCaseNumber->setMinimum(1);
-        useCaseNumber->setMaximum(7);
+        useCaseNumber->setMaximum(8);
         plainTextEdit = new QPlainTextEdit(centralwidget);
         plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
         plainTextEdit->setGeometry(QRect(30, 140, 211, 31));
@@ -226,6 +227,13 @@ public:
 "color: black;\n"
 "font-weight: bold;\n"
 "border: none;"));
+        plainTextEdit_8 = new QPlainTextEdit(centralwidget);
+        plainTextEdit_8->setObjectName(QString::fromUtf8("plainTextEdit_8"));
+        plainTextEdit_8->setGeometry(QRect(30, 490, 181, 31));
+        plainTextEdit_8->setStyleSheet(QString::fromUtf8("background-color: grey;\n"
+"color: black;\n"
+"font-weight: bold;\n"
+"border: none;"));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -270,6 +278,7 @@ public:
         CPRButton->setText(QCoreApplication::translate("MainWindow", "CPR", nullptr));
         batteryText->setPlainText(QCoreApplication::translate("MainWindow", "Battery 100%", nullptr));
         plainTextEdit_7->setPlainText(QCoreApplication::translate("MainWindow", "7. Low Battery Life", nullptr));
+        plainTextEdit_8->setPlainText(QCoreApplication::translate("MainWindow", "8. Loss of Connection", nullptr));
     } // retranslateUi
 
 };

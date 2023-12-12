@@ -74,6 +74,7 @@ void AEDSimulation::powerOn(int useCaseNumber) {
     else if(useCaseNumber == 5) currentScenario.loadScenario(ScenarioType::IrregularHBVT);
     else if(useCaseNumber == 6) currentScenario.loadScenario(ScenarioType::PadsAlreadyOn);
     else if(useCaseNumber == 7) currentScenario.loadScenario(ScenarioType::BatterLifeLow);
+    else if(useCaseNumber == 8) currentScenario.loadScenario(ScenarioType::LossOfConnection);
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 int AEDSimulation::getUseCaseNumber(){
@@ -131,18 +132,24 @@ void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const
     if(step != 4){mainUi->testIMG->setPixmap(QPixmap());}
     if(scenario == 2 && instruction == ""){
         QString imagePath = QDir::currentPath() + "/Images/Nonshockable1.png";
-        currentInstruction = "PEA HB Detected, No shock Needed";
+        currentInstruction = "PEA HB Detected, No shock Needed. Press Next";
+        displayIMG(imagePath);
+        //qDebug("IT SHOULD DISPLAY IMAGE");
+    }
+    else if(scenario == 8 && instruction == ""){
+        QString imagePath = QDir::currentPath() + "/Images/Nonshockable1.png";
+        currentInstruction = "PEA HB Detected, No shock Needed. Press Next";
         displayIMG(imagePath);
         //qDebug("IT SHOULD DISPLAY IMAGE");
     }
     else if(scenario == 3 && instruction == ""){
         QString imagePath = QDir::currentPath() + "/Images/Nonshockable2.png";
-        currentInstruction = "Flatline HB Detected, No shock Needed";
+        currentInstruction = "Flatline HB Detected, No shock Needed. Wait...";
         displayIMG(imagePath);
     }
     else if(scenario == 4 && instruction == ""){
         QString imagePath = QDir::currentPath() + "/Images/Shockable1.png";
-        currentInstruction = "Irregular VF HB Detected, Shock Needed";
+        currentInstruction = "Irregular VF HB Detected, Shock Needed. Wait...";
         displayIMG(imagePath);
     }
     else if(scenario == 5 && instruction == ""){

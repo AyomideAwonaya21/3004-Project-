@@ -113,6 +113,9 @@ void CPRFeedback::connectCPRButton() {
     // Connect the signal to the slot and store the connection
     cprButtonConnection = connect(mainUi->CPRButton, &QPushButton::clicked, this, &CPRFeedback::onCPRButtonClicked);
 }
+void CPRFeedback::setGoodCompressionCount(int value){
+    this->goodCompressionCount = 0;
+};
 void CPRFeedback::disconnectCPRButton() {
     // Disconnect the signal-slot connection
     disconnect(cprButtonConnection);

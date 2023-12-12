@@ -13,6 +13,7 @@ public:
     CPRFeedback(AEDSimulation& aedSimulation,Ui::MainWindow* ui);
     ~CPRFeedback();
     void performCPR();
+    void setGoodCompressionCount(int value);
 
 private:
     std::string updateFeedback(double rate, int depth);

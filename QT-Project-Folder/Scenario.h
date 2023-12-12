@@ -42,6 +42,8 @@ private:
     void batteryLow();
     void activateNextButton();
     void deactivateNextButton();
+    void enableShockButton();
+    void disableShockButton();
 
     //Functions for steps/instructions
     void checkPatient();

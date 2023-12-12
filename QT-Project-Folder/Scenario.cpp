@@ -143,11 +143,13 @@ void Scenario::conductHeartBeatAnalysis(){
 void Scenario::allowShock(){
     deactivateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
-    // Disconnect the existing connection (if any)
-    QObject::disconnect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
-    // Connect the clicked signal of shockButton to onShockButtonClicked slot
+   enableShockButton();
+};
+void Scenario::enableShockButton(){
     QObject::connect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
-
+};
+void Scenario::disableShockButton(){
+    QObject::disconnect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
 };
 /*This function intructs and allows the user to perform CPR on the patient*/
 void Scenario::performCPR(){
@@ -164,6 +166,7 @@ void Scenario::performMouthToMouth(){
 }
 /*This is the function that shocks the patient. Invoked when there is an irregular HB*/
 void Scenario::onShockButtonClicked(){
+    disableShockButton();
     aedSimulation.deliverShock();
     //change battery life
     aedSimulation.depleteBattery(10);

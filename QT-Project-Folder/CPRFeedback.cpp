@@ -6,7 +6,7 @@
 #include <QObject>
 #include <sstream>
 #include <QFont>
-CPRFeedback::CPRFeedback(AEDSimulation& aedSimulation,Ui::MainWindow* ui) :aedSimulation(aedSimulation), mainUi(ui), idealRate(1.66), idealDepth(5) {
+CPRFeedback::CPRFeedback(AEDSimulation& aedSimulation,Ui::MainWindow* ui) : mainUi(ui),aedSimulation(aedSimulation), idealRate(1.66), idealDepth(5) {
     // Connect the valueChanged signal of DepthNumber to a custom slot
         connect(mainUi->depthNumber, QOverload<int>::of(&QSpinBox::valueChanged), this, &CPRFeedback::onDepthNumberValueChanged);
 }
@@ -82,6 +82,8 @@ std::string CPRFeedback::updateFeedback(double rate, int depth) {
                 }
             }
         }
+    int g = "";
+    return "";
 }
 void CPRFeedback::performCPR() {
     //connect(mainUi->CPRButton, &QPushButton::clicked, this, &CPRFeedback::onCPRButtonClicked);
@@ -114,7 +116,7 @@ void CPRFeedback::connectCPRButton() {
     cprButtonConnection = connect(mainUi->CPRButton, &QPushButton::clicked, this, &CPRFeedback::onCPRButtonClicked);
 }
 void CPRFeedback::setGoodCompressionCount(int value){
-    this->goodCompressionCount = 0;
+    this->goodCompressionCount = value;
 };
 void CPRFeedback::disconnectCPRButton() {
     // Disconnect the signal-slot connection

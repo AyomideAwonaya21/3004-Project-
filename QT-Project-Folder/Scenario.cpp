@@ -132,12 +132,9 @@ and sending the aed an instruction to analyze the HB depending on the use case*/
 void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
-    if(aedSimulation.getUseCaseNumber() == 2){aedSimulation.analyzeHB(2);}
-    else  if(aedSimulation.getUseCaseNumber() == 3){aedSimulation.analyzeHB(3);}
-     else  if(aedSimulation.getUseCaseNumber() == 4){aedSimulation.analyzeHB(4);}
-     else  if(aedSimulation.getUseCaseNumber() == 5){aedSimulation.analyzeHB(5);}
-     else  if(aedSimulation.getUseCaseNumber() == 6){aedSimulation.analyzeHB(6);}
-
+    if(aedSimulation.getUseCaseNumber() >=2 && aedSimulation.getUseCaseNumber() <=6){
+        aedSimulation.analyzeHB();
+    }
 };
 /*This function allows the user to shock the patient, it activates the shock button as well*/
 void Scenario::allowShock(){
@@ -161,7 +158,7 @@ void Scenario::performMouthToMouth(){
 }
 /*This is the function that shocks the patient. Invoked when there is an irregular HB*/
 void Scenario::onShockButtonClicked(){
-    aedSimulation.deliverShock(shocksNeeded);
+    aedSimulation.deliverShock();
     //change battery life
     aedSimulation.depleteBattery(10);
 };
@@ -172,7 +169,7 @@ void Scenario::onNextButtonClicked() {
         return;
     }
     // Check if the currentFunctionIndex is within the bounds of the actions vector
-    if (currentFunctionIndex < actions.size()) {
+    if (static_cast<std::vector<int>::size_type>(currentFunctionIndex) < actions.size()) {
         // Execute the function at the current index
         actions[currentFunctionIndex]();
         currentFunctionIndex++;
@@ -182,6 +179,8 @@ void Scenario::onNextButtonClicked() {
 void Scenario::onPadsPlaceButtonClicked() {
     // Change the color of mainUi->padsOn to green
     mainUi.padsOn->setStyleSheet("background-color: green;");
+    aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Pads have been Placed");
+
     this->padsPlaced = true;
 }
 /*This is to instruct the patient to wait for an ambulance and monitor the patient*/

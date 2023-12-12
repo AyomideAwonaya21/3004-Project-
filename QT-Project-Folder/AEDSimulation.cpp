@@ -7,7 +7,18 @@
 #include <QString>
 #include <QDir>
 
-AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this,ui), mainUi(ui), simulationRunning(false), shockCount(0), powerState(false),currentScenario(*this, *mainUi), currentStep(0), battery(100) {
+AEDSimulation::AEDSimulation(Ui::MainWindow* ui):cprFeedback(*this, ui),
+    mainUi(ui),
+    currentScenario(*this, *mainUi),
+    battery(100),  // Initialize battery before using it
+    timer(new QTimer()),  // Initialize timer before using it
+    useCaseNumber(0),
+    batteryLife(0),
+    shockCount(0),
+    currentStep(0),
+    simulationRunning(false),
+    padsPlaced(false),
+    powerState(false){
     // Initialize QTimer
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &AEDSimulation::updateSimulation);
@@ -32,7 +43,7 @@ void AEDSimulation::updateSimulation() {
     updateCurrentTime();
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
-void AEDSimulation::deliverShock(int numOfShocksNeeded) {
+void AEDSimulation::deliverShock() {
     shockCount += 1;
     currentInstruction = "Shock Delivered";
     QString shockString = "Shock " + QString::number(shockCount);
@@ -139,7 +150,7 @@ void AEDSimulation::updateCurrentStepAndInstruction(int step,int scenario, const
     emit updateInterfaceSignal();  // Emit signal to update the interface
 }
 /*Analyzes the HB depending on which use case is being run*/
-bool AEDSimulation::analyzeHB(int scenario){
+void AEDSimulation::analyzeHB(){
     // change display based on shockable or non-shockable
     updateCurrentStepAndInstruction(this->currentStep,this->useCaseNumber , "Analyzing HB ...");
     handleTimeIntervals([this](){

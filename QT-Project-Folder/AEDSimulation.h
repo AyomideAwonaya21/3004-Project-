@@ -30,12 +30,12 @@ public:
     int getBatteryLife();
     // boolean returns
     bool isPoweredOn() const;
-    bool analyzeHB(int scenario);
+    void analyzeHB();
     //void funtions
     void stopSimulation();
     void updateSimulation();
     void CPRFinished();
-    void deliverShock(int numOfShocksNeeded);
+    void deliverShock();
     void powerOn(int useCaseNumber);
     void updateCurrentStepAndInstruction(int step, int scenario, const std::string&instruction);
     void performCPR();

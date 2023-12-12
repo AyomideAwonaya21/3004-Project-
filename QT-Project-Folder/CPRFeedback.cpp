@@ -19,71 +19,75 @@ std::string CPRFeedback::updateFeedback(double rate, int depth) {
     mainUi->instructionText->setFontPointSize(7);
     int idealDepth = 2;
     std::stringstream feedbackStream;
+    std::string returnVal;
     if (rate >= idealRate && rate <= idealRate + 2) {
             if (depth < idealDepth) {
                 // Both rate and depth are within the correct ranges
                 feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nGood Compression Rate\nIncrease Compression Depth";
-                currentFeedback = feedbackStream.str();
-                mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                return "bad";
+//                currentFeedback = feedbackStream.str();
+//                //mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+//                aedSimulation.updateCurrentStepAndInstruction(6,0,currentFeedback);
+                returnVal = "bad";
             }
             else if(depth > idealDepth+2) {
                 // Rate is correct, but depth is incorrect
                 feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nGood Compression Rate\nDecrease Compression Depth";
-                currentFeedback = feedbackStream.str();
-                mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                return "bad";
+//                currentFeedback = feedbackStream.str();
+//                mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                returnVal =  "bad";
             }
             else{
                 feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nGood Compression Rate\nGood Compression Depth";
-                currentFeedback = feedbackStream.str();
-                mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                return "good";
+//                currentFeedback = feedbackStream.str();
+//                mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                returnVal =  "good";
             }
         } else {
             if(rate < idealRate){
                 if(depth < idealDepth){
                     feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nIncrease Compression Rate\nIncrease Compression Depth";
-                    currentFeedback = feedbackStream.str();
-                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                    return "bad";
+//                    currentFeedback = feedbackStream.str();
+//                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                    returnVal =  "bad";
                 }
                 else if(depth > idealDepth+2){
                     feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nIncrease Compression Rate\nDecrease Compression Depth";
-                    currentFeedback = feedbackStream.str();
-                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                    return "bad";
+//                    currentFeedback = feedbackStream.str();
+//                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                    returnVal = "bad";
                 }
                 else{
                     feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nIncrease Compression Rate\nGood Compression Depth";
-                    currentFeedback = feedbackStream.str();
-                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                    return "bad";
+//                    currentFeedback = feedbackStream.str();
+//                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                    returnVal = "bad";
                 }
             }
             else if(rate > idealRate+2){
                 if(depth < idealDepth){
                     feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nDecrease Compression Rate\nIncrease Compression Depth";
-                    currentFeedback = feedbackStream.str();
-                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                    return "bad";
+//                    currentFeedback = feedbackStream.str();
+//                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                    returnVal = "bad";
                 }
                 else if(depth > idealDepth+2){
                     feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nDecrease Compression Rate\nDecrease Compression Depth";
-                    currentFeedback = feedbackStream.str();
-                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                    return "bad";
+//                    currentFeedback = feedbackStream.str();
+//                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+                    returnVal = "bad";
                 }
                 else{
                     feedbackStream << "Good compression count: " << this->goodCompressionCount << "\nDecrease Compression Rate\nGood Compression Depth";
-                    currentFeedback = feedbackStream.str();
-                    mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
-                    return "bad";
+//                    currentFeedback = feedbackStream.str();
+                    //mainUi->instructionText->setPlainText(QString::fromStdString(currentFeedback));
+//                    aedSimulation.updateCurrentStepAndInstruction(6, 0,"Hello" );
+                    returnVal = "bad";
                 }
             }
         }
-    int g = "";
-    return "";
+    currentFeedback = feedbackStream.str();
+    aedSimulation.updateCurrentStepAndInstruction(6,0,currentFeedback);
+    return returnVal;
 }
 void CPRFeedback::performCPR() {
     //connect(mainUi->CPRButton, &QPushButton::clicked, this, &CPRFeedback::onCPRButtonClicked);

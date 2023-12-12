@@ -79,7 +79,7 @@ public:
         textBrowser_2->setStyleSheet(QString::fromUtf8("border-right: 1px solid black;"));
         useCaseNumber = new QSpinBox(centralwidget);
         useCaseNumber->setObjectName(QString::fromUtf8("useCaseNumber"));
-        useCaseNumber->setGeometry(QRect(30, 90, 45, 26));
+        useCaseNumber->setGeometry(QRect(90, 100, 45, 26));
         useCaseNumber->setMinimum(1);
         useCaseNumber->setMaximum(7);
         plainTextEdit = new QPlainTextEdit(centralwidget);

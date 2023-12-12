@@ -40,6 +40,8 @@ private:
     void donNextButtonClicked();
     void onPadsPlaceButtonClicked();
     void batteryLow();
+    void activateNextButton();
+    void deactivateNextButton();
 
     //Functions for steps/instructions
     void checkPatient();

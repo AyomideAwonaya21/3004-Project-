@@ -13,7 +13,8 @@ global use case number, update the GUI and send CPR and HB requests.
 #include <QDir>
 
 Scenario::Scenario(AEDSimulation &aedSimulation, Ui::MainWindow& ui) : aedSimulation(aedSimulation), mainUi(ui) {
-    connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
+    //connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
+    activateNextButton();
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<>distribution(1,3);
@@ -133,11 +134,14 @@ void Scenario::conductHeartBeatAnalysis(){
     // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
     if(aedSimulation.getUseCaseNumber() >=2 && aedSimulation.getUseCaseNumber() <=6){
+        deactivateNextButton();
         aedSimulation.analyzeHB();
+        handleTimeIntervals([this]() { activateNextButton(); }, 2);
     }
 };
 /*This function allows the user to shock the patient, it activates the shock button as well*/
 void Scenario::allowShock(){
+    deactivateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
     // Disconnect the existing connection (if any)
     QObject::disconnect(mainUi.shockButton, &QPushButton::clicked, this, &Scenario::onShockButtonClicked);
@@ -147,11 +151,13 @@ void Scenario::allowShock(){
 };
 /*This function intructs and allows the user to perform CPR on the patient*/
 void Scenario::performCPR(){
+    deactivateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(6,aedSimulation.getUseCaseNumber(), "Perform CPR");
     aedSimulation.performCPR();
 };
 /*This function instructs the user to perform mouth to mouth on the patient*/
 void Scenario::performMouthToMouth(){
+    activateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(7,aedSimulation.getUseCaseNumber(), "Perform Mouth To Mouth");
     //change battery life
     aedSimulation.depleteBattery(5);
@@ -180,7 +186,6 @@ void Scenario::onPadsPlaceButtonClicked() {
     // Change the color of mainUi->padsOn to green
     mainUi.padsOn->setStyleSheet("background-color: green;");
     aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Pads have been Placed");
-
     this->padsPlaced = true;
 }
 /*This is to instruct the patient to wait for an ambulance and monitor the patient*/
@@ -199,6 +204,13 @@ void Scenario::batteryLow(){
     aedSimulation.depleteBattery(95);
     aedSimulation.updateCurrentStepAndInstruction(0,0, "Battery too low, please change batteries before proceeding");
 }
-
+void Scenario::activateNextButton() {
+    // Connect the clicked signal of nextButton to onNextButtonClicked slot
+    QObject::connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
+}
+void Scenario::deactivateNextButton() {
+    // Disconnect the clicked signal of nextButton
+    QObject::disconnect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
+}
 
 

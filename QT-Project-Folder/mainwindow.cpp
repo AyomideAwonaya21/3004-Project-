@@ -45,6 +45,12 @@ void MainWindow::onButtonClicked(int useCaseNumber) {
 }
 /*Updates the buttons on the interface and the text displayed in the middle*/
 void MainWindow::updateInterface() {
+    if(aedSimulation->getCurrentStep() == 6){
+        ui->instructionText->setFontPointSize(7);
+    }
+    else{
+        ui->instructionText->setFontPointSize(9);
+    }
     // Update the user interface elements based on the state of the AED simulation
     ui->instructionText->setPlainText(QString::fromStdString(aedSimulation->getCurrentInstruction()));
     ui->timeText->setPlainText(QString::fromStdString(aedSimulation->getCurrentTime()));

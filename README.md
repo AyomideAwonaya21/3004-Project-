@@ -1,9 +1,10 @@
-# 3004-Project-
-# Group Number: 75
+# 3004-Project- Group Number: 75
+
 # Assigned TA : Monica Diep
+
 # group members: 
-Ayomide Awonaya 
-Abdel Qayyim Maazou Yahaya 
+Ayomide Awonaya, 
+Abdel Qayyim Maazou Yahaya, 
 faramade Odusanya 
 
 # Resposibilities 

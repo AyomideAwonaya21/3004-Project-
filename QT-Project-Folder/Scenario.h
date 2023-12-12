@@ -29,6 +29,7 @@ public:
     void allowShock();
     void conductHeartBeatAnalysis();
     int getShocksNeeded();
+    void resetFunctionIndex();
 
 public slots:
     void onNextButtonClicked();

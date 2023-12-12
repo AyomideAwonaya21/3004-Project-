@@ -54,7 +54,10 @@ void AEDSimulation::deliverShock() {
 }
 /*Start of the AED operation*/
 void AEDSimulation::powerOn(int useCaseNumber) {
+    //reset the starting action function
+   currentScenario.resetFunctionIndex();
     cprFeedback.setGoodCompressionCount(0);
+    shockCount = 0;
     batteryLife = useCaseNumber == 7? 5:100;
     simulationRunning = true;
     this->battery.resetBattery();

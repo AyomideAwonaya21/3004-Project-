@@ -171,6 +171,9 @@ void Scenario::onShockButtonClicked(){
     //change battery life
     aedSimulation.depleteBattery(10);
 };
+void Scenario::resetFunctionIndex(){
+    this->currentFunctionIndex = 0;
+};
 /*This function is connect to the next button, which is meant to move to the next step in the
 operation*/
 void Scenario::onNextButtonClicked() {

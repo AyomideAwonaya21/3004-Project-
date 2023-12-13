@@ -107,6 +107,8 @@ void Scenario::initializeScenario(ScenarioType type) {
              break;
       case ScenarioType::LossOfConnection:
         this->connectionFixed = false;
+        std::cout <<"The function index is:";
+        std::cout << this->currentFunctionIndex<<std::endl;
         checkPatient();
         actions = {
            [this]() { callAmbulance(); },
@@ -126,17 +128,20 @@ void Scenario::initializeScenario(ScenarioType type) {
 }
 /*This function is in charge of indicating to the user the current step*/
 void Scenario::checkPatient(){
+    std::cout << "Audio: Check Patient Responsiveness";
     // set the AEDSimulation text and step, that function will then update GUI
     aedSimulation.updateCurrentStepAndInstruction(1,aedSimulation.getUseCaseNumber(), "Check Patient Responsiveness");
 };
 /*This function is in charge of indicating to the user the current step*/
 void Scenario::callAmbulance(){
+    std::cout << "Audio: Call emergency help";
     aedSimulation.updateCurrentStepAndInstruction(2,aedSimulation.getUseCaseNumber(), "Call Ambulance");
     //change battery life
     aedSimulation.depleteBattery(5);
 };
 /*This function is in charge of indicating to the user the current step*/
 void Scenario::placePadsOnPatient(){
+    std::cout << "Audio: Place Pads on Patient";
     if(aedSimulation.getUseCaseNumber() && connectionFixed == true){
         aedSimulation.updateCurrentStepAndInstruction(3, aedSimulation.getUseCaseNumber(), "Connect Lost, please place pads");
     }
@@ -149,6 +154,7 @@ void Scenario::placePadsOnPatient(){
 /*This function is in charge of indicating to the user the current step,
 and sending the aed an instruction to analyze the HB depending on the use case*/
 void Scenario::conductHeartBeatAnalysis(){
+    std::cout << "Audio: Conduct Heart-Beat Analysis";
     // Note: the analysis should set a variable to true if shock is needed
     aedSimulation.updateCurrentStepAndInstruction(4,aedSimulation.getUseCaseNumber(), "Checking HB");
     if((aedSimulation.getUseCaseNumber() >=2 && aedSimulation.getUseCaseNumber() <=6) || aedSimulation.getUseCaseNumber() ==8){
@@ -167,6 +173,7 @@ void Scenario::conductHeartBeatAnalysis(){
 };
 /*This function allows the user to shock the patient, it activates the shock button as well*/
 void Scenario::allowShock(){
+    std::cout << "Audio: Press Shock button to provide patient with shock";
     deactivateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(5,aedSimulation.getUseCaseNumber(), "Apply Shock");
    enableShockButton();
@@ -179,12 +186,14 @@ void Scenario::disableShockButton(){
 };
 /*This function intructs and allows the user to perform CPR on the patient*/
 void Scenario::performCPR(){
+    std::cout << "Audio: Start CPR";
     deactivateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(6,aedSimulation.getUseCaseNumber(), "Perform CPR");
     aedSimulation.performCPR();
 };
 /*This function instructs the user to perform mouth to mouth on the patient*/
 void Scenario::performMouthToMouth(){
+    std::cout << "Audio: Perform mouth to mouth";
     activateNextButton();
     aedSimulation.updateCurrentStepAndInstruction(7,aedSimulation.getUseCaseNumber(), "Perform Mouth To Mouth");
     //change battery life
@@ -237,10 +246,12 @@ void Scenario::batteryLow(){
     aedSimulation.updateCurrentStepAndInstruction(0,0, "Battery too low, please change batteries before proceeding");
 }
 void Scenario::activateNextButton() {
+    this->nextButtonActivated = true;
     // Connect the clicked signal of nextButton to onNextButtonClicked slot
     QObject::connect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
 }
 void Scenario::deactivateNextButton() {
+    this->nextButtonActivated = false;
     // Disconnect the clicked signal of nextButton
     QObject::disconnect(mainUi.nextButton, &QPushButton::clicked, this, &Scenario::onNextButtonClicked);
 }

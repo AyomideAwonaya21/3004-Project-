@@ -65,6 +65,9 @@ void AEDSimulation::powerOn(int useCaseNumber) {
     currentTime = "00:00";
     timer->start();  // Start the timer
     powerState = true;
+    if(currentScenario.nextButtonActivated == false){
+     currentScenario.activateNextButton();
+    }
     currentStep = useCaseNumber;
     this->useCaseNumber = useCaseNumber;
     if(useCaseNumber == 1) currentScenario.loadScenario(ScenarioType::SelfCheck);

@@ -31,6 +31,9 @@ public:
     void conductHeartBeatAnalysis();
     int getShocksNeeded();
     void resetFunctionIndex();
+    void activateNextButton();
+    void deactivateNextButton();
+     bool nextButtonActivated = true;
 
 public slots:
     void onNextButtonClicked();
@@ -42,8 +45,6 @@ private:
     void donNextButtonClicked();
     void onPadsPlaceButtonClicked();
     void batteryLow();
-    void activateNextButton();
-    void deactivateNextButton();
     void enableShockButton();
     void disableShockButton();
 
@@ -65,6 +66,7 @@ private:
     bool padsPlaced = false;
     int currentFunctionIndex;
     bool connectionFixed = false;
+
     int shocksNeeded;  
 };
 #endif // SCENARIO_H
